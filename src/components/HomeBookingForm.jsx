@@ -9,7 +9,10 @@ import {
   ratesForService,
   todayISO,
 } from '../utils/pricing';
+import { digitsOnlyPhone, submitDeepCleaningInquiry } from '../utils/api';
+import { cityFromAddress } from '../utils/googleMaps';
 import { openWhatsApp } from '../utils/whatsapp';
+import AddressAutocomplete from './AddressAutocomplete';
 
 const SIZES = ['1RK', '1BHK', '2BHK', '3BHK', '4BHK'];
 const TYPES = ['Furnished', 'Empty'];
@@ -30,6 +33,8 @@ export default function HomeBookingForm() {
   const [consent, setConsent] = useState(false);
   const [status, setStatus] = useState(null);
   const [statusUrl, setStatusUrl] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState(null);
 
   const isFullHome = service === 'Full Home Deep Cleaning';
 
@@ -73,33 +78,75 @@ export default function HomeBookingForm() {
     }
   }
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
-    if (!current || !pricing || invalid) return;
+    if (!current || !pricing || invalid || submitting) return;
     const form = new FormData(event.currentTarget);
-    const message = [
-      'Hello Deepcleaning99, please confirm my cleaning booking request.',
-      `Name: ${form.get('name')}`,
-      `Mobile: ${form.get('phone')}`,
-      `Service: ${service}`,
-      `Package: ${current.package}`,
-      `Quantity: ${quantity} ${current.unit}`,
-      `Regular service charge: ${money(pricing.base)}`,
-      `30% launch discount: ${money(pricing.saving)}`,
-      `Service estimate (GST extra): ${money(pricing.total)}`,
-      `City: ${city}`,
-      `Locality / Pincode: ${form.get('area')}`,
-      `Address: ${form.get('address')}`,
-      `Preferred date: ${form.get('date')}`,
-      `Preferred time: ${form.get('time')}`,
-      'Please confirm the scope, final tax-inclusive price and available appointment.',
-    ].join('\n');
+    const phone = digitsOnlyPhone(form.get('phone'));
+    const name = String(form.get('name') || '').trim();
+    const address = String(form.get('address') || '').trim();
+    const preferredDate = String(form.get('date') || '').trim();
+    const preferredTime = String(form.get('time') || '').trim();
 
-    const url = openWhatsApp(message);
-    setStatus(
-      'Your request is ready. Tap Send in WhatsApp; our team will confirm the appointment.',
-    );
-    setStatusUrl(url);
+    setError(null);
+    setStatus(null);
+    setStatusUrl('');
+    setSubmitting(true);
+
+    const segment =
+      service === 'Office Deep Cleaning' ? 'Commercial' : 'Residential';
+
+    try {
+      await submitDeepCleaningInquiry({
+        name,
+        mobile: phone,
+        city,
+        address,
+        segment,
+        service,
+        package_name: current.package,
+        package_id: current.id || '',
+        quantity: String(quantity),
+        unit: current.unit || '',
+        plan: 'one',
+        property_size: isFullHome ? size : '',
+        property_type: isFullHome ? type : '',
+        preferred_date: preferredDate,
+        preferred_time: preferredTime,
+        estimated_price: pricing.total,
+        regular_price: pricing.base,
+        discount_amount: pricing.saving,
+        notes: '',
+        page_url: typeof window !== 'undefined' ? window.location.href : '',
+      });
+
+      const message = [
+        'Hello Deepcleaning99, please confirm my cleaning booking request.',
+        `Name: ${name}`,
+        `Mobile: ${phone}`,
+        `Service: ${service}`,
+        `Package: ${current.package}`,
+        `Quantity: ${quantity} ${current.unit}`,
+        `Regular service charge: ${money(pricing.base)}`,
+        `30% launch discount: ${money(pricing.saving)}`,
+        `Service estimate (GST extra): ${money(pricing.total)}`,
+        `City: ${city}`,
+        `Address: ${address}`,
+        `Preferred date: ${preferredDate}`,
+        `Preferred time: ${preferredTime}`,
+        'Please confirm the scope, final tax-inclusive price and available appointment.',
+      ].join('\n');
+
+      const url = openWhatsApp(message);
+      setStatus(
+        'Booking request saved. Our team will contact you shortly. You can also send the same details on WhatsApp.',
+      );
+      setStatusUrl(url);
+    } catch (err) {
+      setError(err?.message || 'Could not submit booking request. Please try again.');
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   return (
@@ -185,7 +232,7 @@ export default function HomeBookingForm() {
       )}
 
       <div className="home-form-grid">
-        <label>
+        <label className="wide">
           City
           <select
             name="city"
@@ -199,23 +246,17 @@ export default function HomeBookingForm() {
             ))}
           </select>
         </label>
-        <label>
-          Locality / Pincode
-          <input
-            name="area"
-            placeholder="Enter locality or pincode"
-            required
-            maxLength={120}
-          />
-        </label>
         <label className="wide">
           Complete Address
-          <input
+          <AddressAutocomplete
             name="address"
-            placeholder="Enter complete address"
+            placeholder="Start typing your address"
             required
             maxLength={300}
-            autoComplete="street-address"
+            onSelect={(address) => {
+              const match = cityFromAddress(address, site.cities);
+              if (match) setCity(match);
+            }}
           />
         </label>
         <label>
@@ -296,16 +337,25 @@ export default function HomeBookingForm() {
         </span>
       </label>
 
-      <button className="button full" type="submit" disabled={!current || invalid}>
-        Confirm Booking
+      <button
+        className="button full"
+        type="submit"
+        disabled={!current || invalid || submitting}
+      >
+        {submitting ? 'Submitting…' : 'Confirm Booking'}
       </button>
       <small className="home-booking-note">
-        Send your request on WhatsApp. Our team confirms the final price and
-        appointment.
+        Confirm Booking saves your request to our team. Final price and
+        appointment are confirmed after review.
       </small>
       {invalid ? (
         <p className="form-error" role="alert">
           Choose the package for your actual area, or call for a custom quote.
+        </p>
+      ) : null}
+      {error ? (
+        <p className="form-error" role="alert">
+          {error}
         </p>
       ) : null}
       {status ? (

@@ -7,7 +7,10 @@ import {
   money,
   todayISO,
 } from '../utils/pricing';
+import { digitsOnlyPhone, submitDeepCleaningInquiry } from '../utils/api';
+import { cityFromAddress } from '../utils/googleMaps';
 import { openWhatsApp } from '../utils/whatsapp';
+import AddressAutocomplete from './AddressAutocomplete';
 
 const TIMES = [
   'Morning · 9 AM–12 PM',
@@ -40,6 +43,8 @@ export default function BookingForm() {
   const [consent, setConsent] = useState(false);
   const [status, setStatus] = useState(null);
   const [statusUrl, setStatusUrl] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState(null);
 
   const matching = useMemo(
     () =>
@@ -92,38 +97,79 @@ export default function BookingForm() {
     if (rate) setQuantity(rate.quantity);
   }
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
-    if (!current || !estimate || rangeInvalid) return;
+    if (!current || !estimate || rangeInvalid || submitting) return;
     const form = new FormData(event.currentTarget);
-    const message = [
-      'Hello Deepcleaning99, I would like to request a cleaning booking.',
-      `Name: ${form.get('name')}`,
-      `Mobile: ${form.get('phone')}`,
-      `Property: ${segment}`,
-      `Service: ${service}`,
-      `Package: ${current.package}`,
-      `Quantity: ${activeQuantity} ${current.unit}`,
-      `Plan: ${plan === 'amc' ? 'AMC / scheduled cleaning' : 'One-time · 30% launch offer'}`,
-      `Service estimate (excluding applicable GST): ${money(estimate.total)}`,
-      plan === 'amc' && estimate.amc
-        ? `Plan: ${estimate.amc.visits} visits/year, ${money(estimate.amc.perVisit)} per visit`
-        : '',
-      `City: ${form.get('city')}`,
-      `Area: ${form.get('area')}`,
-      `Address: ${form.get('address')}`,
-      `Preferred appointment: ${form.get('date')} · ${form.get('time')}`,
-      form.get('notes') ? `Notes: ${form.get('notes')}` : '',
-      'Please confirm the final scope, tax-inclusive quote and appointment availability.',
-    ]
-      .filter(Boolean)
-      .join('\n');
+    const name = String(form.get('name') || '').trim();
+    const phone = digitsOnlyPhone(form.get('phone'));
+    const formCity = String(form.get('city') || city).trim();
+    const address = String(form.get('address') || '').trim();
+    const preferredDate = String(form.get('date') || '').trim();
+    const preferredTime = String(form.get('time') || '').trim();
+    const notes = String(form.get('notes') || '').trim();
 
-    const url = openWhatsApp(message);
-    setStatus(
-      'Your request is ready. Tap Send in WhatsApp to deliver it. The team will confirm the appointment.',
-    );
-    setStatusUrl(url);
+    setError(null);
+    setStatus(null);
+    setStatusUrl('');
+    setSubmitting(true);
+
+    try {
+      await submitDeepCleaningInquiry({
+        name,
+        mobile: phone,
+        city: formCity,
+        address,
+        segment,
+        service,
+        package_name: current.package,
+        package_id: current.id || '',
+        quantity: String(activeQuantity),
+        unit: current.unit || '',
+        plan: plan === 'amc' ? 'amc' : 'one',
+        preferred_date: preferredDate,
+        preferred_time: preferredTime,
+        estimated_price: estimate.total,
+        regular_price: estimate.scheduled
+          ? current.base * (estimate.amc?.visits || 1)
+          : estimate.base,
+        discount_amount: estimate.scheduled ? 0 : estimate.saving,
+        notes,
+        page_url: typeof window !== 'undefined' ? window.location.href : '',
+      });
+
+      const message = [
+        'Hello Deepcleaning99, I would like to request a cleaning booking.',
+        `Name: ${name}`,
+        `Mobile: ${phone}`,
+        `Property: ${segment}`,
+        `Service: ${service}`,
+        `Package: ${current.package}`,
+        `Quantity: ${activeQuantity} ${current.unit}`,
+        `Plan: ${plan === 'amc' ? 'AMC / scheduled cleaning' : 'One-time · 30% launch offer'}`,
+        `Service estimate (excluding applicable GST): ${money(estimate.total)}`,
+        plan === 'amc' && estimate.amc
+          ? `Plan: ${estimate.amc.visits} visits/year, ${money(estimate.amc.perVisit)} per visit`
+          : '',
+        `City: ${formCity}`,
+        `Address: ${address}`,
+        `Preferred appointment: ${preferredDate} · ${preferredTime}`,
+        notes ? `Notes: ${notes}` : '',
+        'Please confirm the final scope, tax-inclusive quote and appointment availability.',
+      ]
+        .filter(Boolean)
+        .join('\n');
+
+      const url = openWhatsApp(message);
+      setStatus(
+        'Booking request saved. Our team will contact you shortly. You can also send the same details on WhatsApp.',
+      );
+      setStatusUrl(url);
+    } catch (err) {
+      setError(err?.message || 'Could not submit booking request. Please try again.');
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   return (
@@ -230,7 +276,7 @@ export default function BookingForm() {
               required
             />
           </label>
-          <label>
+          <label className="wide">
             City
             <select
               name="city"
@@ -242,22 +288,17 @@ export default function BookingForm() {
               ))}
             </select>
           </label>
-          <label>
-            Area / locality
-            <input
-              name="area"
-              autoComplete="address-level3"
-              required
-              maxLength={150}
-            />
-          </label>
           <label className="wide">
             Address
-            <input
+            <AddressAutocomplete
               name="address"
-              autoComplete="street-address"
+              placeholder="Start typing your address"
               required
               maxLength={300}
+              onSelect={(address) => {
+                const match = cityFromAddress(address, site.cities);
+                if (match) setCity(match);
+              }}
             />
           </label>
           <label>
@@ -298,19 +339,27 @@ export default function BookingForm() {
           </span>
         </label>
 
-        <button className="button full" type="submit" disabled={!current || rangeInvalid}>
-          Send booking request on WhatsApp
+        <button
+          className="button full"
+          type="submit"
+          disabled={!current || rangeInvalid || submitting}
+        >
+          {submitting ? 'Submitting…' : 'Confirm Booking'}
         </button>
         <p className="fine">
-          WhatsApp opens with your details. Tap Send there to deliver your
-          request. An appointment is confirmed only after our team verifies the
-          scope, final price and slot.
+          Confirm Booking saves your request to our team. An appointment is
+          confirmed only after we verify the scope, final price and slot.
         </p>
         {rangeInvalid ? (
           <p className="form-error" role="alert">
             {plan === 'amc'
               ? `This AMC price is for ${current.quantity} ${current.unit}. Restore that quantity or call for a custom plan.`
               : 'This area is outside the selected package range. Choose the correct package or ask for a custom quote.'}
+          </p>
+        ) : null}
+        {error ? (
+          <p className="form-error" role="alert">
+            {error}
           </p>
         ) : null}
         {status ? (
