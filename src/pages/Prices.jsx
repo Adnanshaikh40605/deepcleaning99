@@ -6,9 +6,9 @@ import { useDocumentMeta } from '../hooks/useDocumentMeta';
 
 export default function Prices() {
   useDocumentMeta({
-    title: 'Deep Cleaning Rates & 30% Launch Offer | Deepcleaning99',
+    title: 'Deep Cleaning Prices and Package Details | Deepcleaning99',
     description:
-      'Browse home and commercial cleaning packages, technician counts, time estimates and AMC rates. Prices exclude applicable GST.',
+      'Compare cleaning package prices and check the included work, minimum charges, discounts and total payable before booking with Deepcleaning99.',
     path: '/prices/',
   });
 
@@ -29,8 +29,8 @@ export default function Prices() {
     <>
       <PageHero
         eyebrow="RATES & PACKAGES"
-        title="A clear price for the work."
-        description="30% off one-time cleaning service charges. Choose a package that fits your space."
+        title="Cleaning prices with the scope clearly shown"
+        description="We price full-home cleaning by the agreed property size and condition. Sofas are usually quoted by seat count, mattresses by size and quantity, and carpets by measured area. Commercial cleaning needs a scope-based quotation."
       />
       <section className="section wrap">
         <div className="price-filters">
@@ -68,10 +68,15 @@ export default function Prices() {
           </label>
         </div>
         <p className="fine">
-          All rates exclude applicable GST. Minimum booking charges and package
-          caps apply. Commercial and villa quotes depend on a scope review. AMC
-          prices use the rate sheet’s scheduled-visit discounts; the 30% offer
-          is not added.
+          Every price card shows what it covers. Check the area cap, included
+          bathrooms or items, minimum booking amount and any separately priced
+          work before confirming. Where the 30% offer applies, the booking
+          summary shows the regular service price, discount and service amount.
+          Applicable GST is extra and is confirmed before the visit. The offer
+          applies only to the eligible one-time scope and is not combined with
+          a scheduled cleaning discount. Heavy grease, renovation residue,
+          special upholstery, extra areas and access restrictions may need a
+          revised quotation. We discuss additional work before adding it.
         </p>
         <div className="rate-grid">
           {rates.map((rate) => (

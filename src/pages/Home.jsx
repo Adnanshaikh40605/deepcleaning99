@@ -5,57 +5,57 @@ import { money } from '../utils/pricing';
 
 const services = [
   {
-    title: 'Full Home\nCleaning',
+    title: 'Full Home Deep Cleaning',
     href: '/full-home-deep-cleaning/',
-    note: 'Starting from (1BHK)',
+    note: 'Cleaning for furnished and empty flats, bungalows and villas. Choose your property size and check the areas included in your package.',
     regular: 3499,
     price: 2449,
     photo: 1,
   },
   {
-    title: 'Kitchen\nCleaning',
+    title: 'Kitchen Deep Cleaning',
     href: '/kitchen-deep-cleaning/',
-    note: 'Occupied kitchen',
+    note: 'Attention to grease on accessible tiles, countertops, sinks and cabinets. Share the kitchen condition so we can recommend the right scope.',
     regular: 1499,
     price: 1049,
     photo: 2,
   },
   {
-    title: 'Bathroom\nCleaning',
+    title: 'Bathroom Deep Cleaning',
     href: '/bathroom-deep-cleaning/',
-    note: 'Per bathroom',
+    note: 'Cleaning for tiles, toilets, basins and suitable fittings, including accessible soap residue and scale buildup.',
     regular: 699,
     price: 489,
     photo: 3,
   },
   {
-    title: 'Sofa\nCleaning',
+    title: 'Sofa Cleaning',
     href: '/sofa-cleaning/',
-    note: '3-seat fabric sofa',
+    note: 'Fabric sofa cleaning using a method suited to the upholstery. Leather sofas need a separate cleaning process.',
     regular: 899,
     price: 629,
     photo: 4,
   },
   {
-    title: 'Mattress\nCleaning',
+    title: 'Mattress Cleaning',
     href: '/mattress-cleaning/',
-    note: 'Single mattress',
+    note: 'Vacuuming and suitable surface cleaning for single, double and king-size mattresses. The material and condition determine the method.',
     regular: 699,
     price: 489,
     photo: 5,
   },
   {
-    title: 'Carpet\nCleaning',
+    title: 'Carpet Cleaning',
     href: '/carpet-cleaning/',
-    note: '80 sq ft rug',
+    note: 'Cleaning for suitable rugs and fitted carpets at homes and commercial properties. Share the size and material for a quote.',
     regular: 960,
     price: 672,
     photo: 6,
   },
   {
-    title: 'Office\nCleaning',
+    title: 'Office Deep Cleaning',
     href: '/office-deep-cleaning/',
-    note: 'Custom office quotation',
+    note: 'Scheduled cleaning for workstations, floors, accessible glass, pantries and washrooms, with the scope agreed before the visit.',
     office: true,
     photo: 7,
   },
@@ -64,26 +64,45 @@ const services = [
 const steps = [
   {
     n: '1',
-    title: 'Choose Service',
-    text: 'Select your cleaning service and details.',
+    title: 'Choose your service',
+    text: 'Select the cleaning job and enter the size or quantity.',
   },
   {
     n: '2',
-    title: 'Send Your Request',
-    text: 'Fill in your details and send on WhatsApp.',
+    title: 'Check your booking',
+    text: 'Review the included work, price, location and preferred appointment.',
   },
   {
     n: '3',
-    title: 'Booking Confirmation',
-    text: 'Our team confirms the price and appointment.',
+    title: 'Confirm your details',
+    text: 'Submit your booking. Our team will verify the details and confirm availability before the visit.',
+  },
+];
+
+const faqs = [
+  {
+    q: 'Is sofa shampooing included in full-home cleaning?',
+    a: 'It is a separate service unless your selected package specifically includes it. Check the booking summary before confirming.',
+  },
+  {
+    q: 'Can I book only one room or item?',
+    a: 'You can choose kitchen, bathroom, sofa, mattress or carpet cleaning separately. Minimum booking charges may apply.',
+  },
+  {
+    q: 'Do you clean commercial properties?',
+    a: 'Yes. We provide commercial deep cleaning with a scope and quotation based on the property.',
+  },
+  {
+    q: 'Will you bring the equipment?',
+    a: 'The cleaning team brings the equipment and cleaning products needed for the agreed work. We will tell you if access, water, electricity or any other preparation is required.',
   },
 ];
 
 export default function Home() {
   useDocumentMeta({
-    title: 'Home & Office Deep Cleaning | Deepcleaning99',
+    title: 'Home and Office Deep Cleaning Services | Deepcleaning99',
     description:
-      'Book full home, kitchen, bathroom, sofa, mattress, carpet and office cleaning in Mumbai, Thane, Navi Mumbai, Pune and Lonavala. Call 7710082627.',
+      'Book home, kitchen, bathroom, sofa, mattress, carpet and office cleaning in Mumbai, Thane, Navi Mumbai, Pune and Lonavala with Deepcleaning99.',
     path: '/',
   });
 
@@ -94,19 +113,19 @@ export default function Home() {
           <div className="hero-visual">
             <img
               className="hero-image"
-              src="/assets/cleaning-hero.webp"
-              width={1536}
+              src="/assets/hero-mobile.jpg"
+              width={682}
               height={1024}
-              alt="Cleaning technician using professional extraction equipment on a fabric sofa"
+              alt="Cleaning team deep cleaning a bright home, including the sofa, kitchen, windows and bathroom"
               fetchPriority="high"
             />
             <div className="hero-copy">
               <h1>
-                Professional
+                Deep cleaning
                 <br />
-                Deep Cleaning
+                for your home
                 <br />
-                <em>At Your Doorstep</em>
+                <em>and workplace</em>
               </h1>
               <p className="hero-locations">
                 Mumbai · Navi Mumbai · Thane
@@ -133,6 +152,16 @@ export default function Home() {
                     Equipment
                   </strong>
                 </div>
+                <div>
+                  <span className="benefit-icon" aria-hidden="true">
+                    ✓
+                  </span>
+                  <strong>
+                    Clear
+                    <br />
+                    Service Scope
+                  </strong>
+                </div>
               </div>
             </div>
           </div>
@@ -142,8 +171,13 @@ export default function Home() {
 
       <section className="services-section wrap" id="services">
         <div className="section-intro">
-          <h2>Our Cleaning Services</h2>
-          <p>Professional cleaning for a fresher home and workplace.</p>
+          <h2>Choose what you need cleaned</h2>
+          <p>
+            The kitchen needs more than a quick wipe. The sofa has been used
+            every day. Or you are moving into a flat and want it cleaned before
+            the furniture arrives. Tell us what needs attention, and choose a
+            cleaning service that fits your property.
+          </p>
         </div>
         <div className="service-grid">
           {services.map((item) => (
@@ -151,17 +185,10 @@ export default function Home() {
               <div
                 className={`service-photo photo-${item.photo}`}
                 role="img"
-                aria-label={item.title.replace('\n', ' ')}
+                aria-label={item.title}
               />
               <div className="service-copy">
-                <h3>
-                  {item.title.split('\n').map((line) => (
-                    <span key={line}>
-                      {line}
-                      <br />
-                    </span>
-                  ))}
-                </h3>
+                <h3>{item.title}</h3>
                 <p>{item.note}</p>
                 {item.office ? (
                   <p className="office-note">
@@ -189,10 +216,24 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="section wrap">
+        <div className="section-intro">
+          <h2>Know the scope before the team arrives</h2>
+          <p>
+            Full-home cleaning and sofa shampooing are different jobs. An empty
+            flat and a furnished flat also need different amounts of work. We
+            explain what your booking covers, which items are extra and what
+            needs to be cleared before the visit. If the property needs
+            additional work, we discuss it with you before changing the scope
+            or price.
+          </p>
+        </div>
+      </section>
+
       <section className="how-section" id="how-it-works">
         <div className="wrap how-grid">
           <div>
-            <h2>How It Works</h2>
+            <h2>How booking works</h2>
             <div className="steps">
               {steps.map((step) => (
                 <article key={step.n}>
@@ -206,55 +247,42 @@ export default function Home() {
             </div>
           </div>
           <aside className="how-aside">
-            <h3>Office or Commercial Property?</h3>
+            <h3>Cleaning for commercial properties</h3>
             <p>
-              Get a custom quote for your office, commercial space or large
-              property.
+              An office may need an after-hours visit. A restaurant kitchen may
+              need heavier grease removal. A guest property may have several
+              rooms and mattresses to clean. Send the property size, photographs
+              and preferred schedule so we can prepare a suitable quotation.
             </p>
             <Link className="button outline full" to="/commercial-deep-cleaning/">
-              Request a Custom Quote
+              Request a Site Survey
             </Link>
           </aside>
         </div>
       </section>
 
-      <section className="more-section wrap">
-        <details>
-          <summary>Service scope, cleaning plans & useful information</summary>
-          <div>
-            <p>
-              Deepcleaning99.com provides residential and commercial deep
-              cleaning under Multi Pest Care LLP, as part of Pestcontrol99.com.
-              Our team brings equipment and products for the agreed work.
-            </p>
-            <p>
-              Full-home cleaning covers accessible surfaces, one kitchen and the
-              package’s capped number of bathrooms. Sofa, mattress and carpet
-              cleaning are separate services. Permanent stains and existing
-              damage may remain.
-            </p>
-            <p>
-              Call centre and WhatsApp support are available 24×7. Cleaning
-              visits depend on appointment availability. Scheduled AMC packages
-              cover an agreed number of visits and do not include daily
-              housekeeping. AMC discounts do not combine with the 30% one-time
-              offer.
-            </p>
-            <p>
-              <Link className="text-link" to="/faqs/">
-                Read FAQs
-              </Link>{' '}
-              ·{' '}
-              <Link className="text-link" to="/guides/">
-                Cleaning guides
-              </Link>{' '}
-              ·{' '}
-              <Link className="text-link" to="/service-quality/">
-                Service quality
-              </Link>
-            </p>
-          </div>
-        </details>
+      <section className="section wrap">
+        <div className="section-intro">
+          <h2>Need cleaning and pest control</h2>
+          <p>
+            For cockroaches, termites, bed bugs and other pest problems, visit{' '}
+            <a className="text-link" href="https://pestcontrol99.com/">
+              Pestcontrol99.com
+            </a>
+            . For deep cleaning, book through Deepcleaning99.com. If you need
+            both, tell our team so the visits can be planned in a suitable
+            order. Cleaning around a recent treatment must follow the
+            pest-control technician’s instructions.
+          </p>
+        </div>
+        <div className="prose faq-list">
+          {faqs.map((item) => (
+            <details key={item.q}>
+              <summary>{item.q}</summary>
+              <p>{item.a}</p>
+            </details>
+          ))}
+        </div>
       </section>
     </>
   );

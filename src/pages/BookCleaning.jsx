@@ -4,18 +4,18 @@ import { useDocumentMeta } from '../hooks/useDocumentMeta';
 
 export default function BookCleaning() {
   useDocumentMeta({
-    title: 'Book Deep Cleaning | Deepcleaning99',
+    title: 'Book Deep Cleaning Online | Deepcleaning99',
     description:
-      'Choose your cleaning package, review the estimate and request an appointment on WhatsApp. Call 7710082627 for 24x7 support.',
+      'Choose your cleaning service, enter the property details and review your price before confirming a Deepcleaning99 booking.',
     path: '/book-cleaning/',
   });
 
   return (
     <>
       <PageHero
-        eyebrow="YOUR CLEANING, YOUR SCHEDULE"
-        title="Book a cleaner space."
-        description="Select a package, review the estimate and send your booking request."
+        eyebrow="DEEPCLEANING99"
+        title="Book your cleaning service"
+        description="Choose the service and tell us a little about the property. You will be able to review the included work and price before submitting your booking."
       />
       <BookingForm />
     </>

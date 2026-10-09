@@ -46,6 +46,10 @@ export default function App() {
           <Route index element={<Home />} />
           <Route path="prices" element={<Navigate to="/prices/" replace />} />
           <Route path="prices/" element={<Prices />} />
+          <Route path="cleaning-prices" element={<Navigate to="/prices/" replace />} />
+          <Route path="cleaning-prices/" element={<Navigate to="/prices/" replace />} />
+          <Route path="cleaning-amc" element={<Navigate to="/scheduled-cleaning/" replace />} />
+          <Route path="cleaning-amc/" element={<Navigate to="/scheduled-cleaning/" replace />} />
           <Route path="book-cleaning" element={<Navigate to="/book-cleaning/" replace />} />
           <Route path="book-cleaning/" element={<BookCleaning />} />
           <Route path="contact-us" element={<Navigate to="/contact-us/" replace />} />

@@ -5,18 +5,18 @@ import { Link } from 'react-router-dom';
 
 export default function Contact() {
   useDocumentMeta({
-    title: 'Contact Deepcleaning99 | 24×7 Call & WhatsApp',
+    title: 'Contact Deepcleaning99 for Cleaning Bookings and Quotes',
     description:
-      'Call or WhatsApp 7710082627 for cleaning bookings, commercial quotes and service enquiries.',
+      'Contact Deepcleaning99 for residential cleaning bookings, commercial quotations and service enquiries across our five service cities.',
     path: '/contact-us/',
   });
 
   return (
     <>
       <PageHero
-        eyebrow="24×7 CUSTOMER SUPPORT"
-        title="Tell us what needs cleaning."
-        description="For home bookings, commercial quotes or help with an existing visit."
+        eyebrow="DEEPCLEANING99"
+        title="Tell us what needs cleaning"
+        description="For home bookings, tell us the service, property size and location. For commercial work, add the floor area, photographs and preferred schedule."
       />
       <section className="section wrap contact-grid">
         <article className="info-card">
@@ -45,12 +45,18 @@ export default function Contact() {
           <h2>Service areas</h2>
           <p>{site.cities.join(', ')}.</p>
           <small>
-            24×7 support. Cleaning visits depend on appointment availability.
+            Multi Pest Care LLP · Deepcleaning99.com by Pestcontrol99.com.
+            Call centre and WhatsApp support are available 24×7. Cleaning
+            appointments depend on slot availability.
           </small>
           <p style={{ marginTop: 16 }}>
             <Link className="text-link" to="/book-cleaning/">
-              Or book online
+              Send my enquiry
             </Link>
+            {' · '}
+            <a className="text-link" href="https://pestcontrol99.com/">
+              Pest control enquiries
+            </a>
           </p>
         </article>
       </section>

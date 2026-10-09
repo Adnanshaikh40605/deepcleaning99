@@ -46,11 +46,11 @@ export const pages = {
     "cards": []
   },
   "/book-cleaning/": {
-    "title": "Book Deep Cleaning | Deepcleaning99",
-    "description": "Choose your cleaning package, review the estimate and request an appointment on WhatsApp. Call 7710082627 for 24x7 support.",
-    "eyebrow": "YOUR CLEANING, YOUR SCHEDULE",
-    "h1": "Book a cleaner space.",
-    "heroP": "Select a package, review the estimate and send your booking request.",
+    "title": "Book Deep Cleaning Online | Deepcleaning99",
+    "description": "Choose your cleaning service, enter the property details and review your price before confirming a Deepcleaning99 booking.",
+    "eyebrow": "DEEPCLEANING99",
+    "h1": "Book your cleaning service",
+    "heroP": "Choose the service and tell us a little about the property. You will be able to review the included work and price before submitting your booking.",
     "crumbs": "",
     "proseHtml": "",
     "faqs": [],
@@ -65,7 +65,7 @@ export const pages = {
     "h1": "Booking terms",
     "heroP": "",
     "crumbs": "Home / Booking terms",
-    "proseHtml": "<p>Your booking covers the services, quantities and areas shown in the confirmed summary or written quotation. Please check these details before the visit. Additional items are included only after the scope and price are agreed.</p><p>Sending your WhatsApp request shares your details and preferred appointment with our team. The appointment is final when our team confirms availability and the service details. Where a survey is needed, the quotation is finalised after that assessment.</p><p>Please provide accurate property details and arrange access, water and electricity where required. Secure valuables and clear the areas agreed for cleaning. Inform us about delicate surfaces, damaged fittings or access restrictions in advance.</p><p>Price changes for extra work must be discussed before the extra work begins. The confirmed summary or quotation states the service amount, applicable tax, total payable and payment arrangement.</p><p>For rescheduling or cancellation, contact us as early as possible. Any applicable charge must be disclosed before you confirm the booking. Refund eligibility and timing will be communicated according to the terms attached to your booking.</p><p>Cleaning results depend on the material and condition. We do not guarantee removal of every stain or restoration of worn or damaged surfaces. Please refer to the service-quality policy for reporting missed areas, cleaning defects or damage concerns.</p>",
+    "proseHtml": "<p>Your booking covers the services, quantities and areas shown in the confirmed summary or written quotation. Please check these details before the visit. Additional items are included only after the scope and price are agreed.</p><p>Submitting a booking records your details and preferred appointment. The appointment is final when our team confirms availability and the service details. Where a survey is needed, the quotation is finalised after that assessment.</p><p>Please provide accurate property details and arrange access, water and electricity where required. Secure valuables and clear the areas agreed for cleaning. Inform us about delicate surfaces, damaged fittings or access restrictions in advance.</p><p>Price changes for extra work must be discussed before the extra work begins. The confirmed summary or quotation states the service amount, applicable tax, total payable and payment arrangement.</p><p>For rescheduling or cancellation, contact us as early as possible. Any applicable charge must be disclosed before you confirm the booking. Refund eligibility and timing will be communicated according to the terms attached to your booking.</p><p>Cleaning results depend on the material and condition. We do not guarantee removal of every stain or restoration of worn or damaged surfaces. Please refer to the service-quality policy for reporting missed areas, cleaning defects or damage concerns.</p>",
     "faqs": [],
     "dataService": null,
     "aside": {
@@ -120,10 +120,10 @@ export const pages = {
     "cards": []
   },
   "/contact-us/": {
-    "title": "Contact Deepcleaning99 | 24×7 Call & WhatsApp",
+    "title": "Contact Deepcleaning99 for Cleaning Bookings and Quotes",
     "description": "Call or WhatsApp 7710082627 for cleaning bookings, commercial quotes and service enquiries.",
     "eyebrow": "24×7 CUSTOMER SUPPORT",
-    "h1": "Tell us what needs cleaning.",
+    "h1": "Tell us what needs cleaning",
     "heroP": "For home bookings, commercial quotes or help with an existing visit.",
     "crumbs": "",
     "proseHtml": "",
@@ -181,7 +181,7 @@ export const pages = {
     "h1": "Deep cleaning services in Mumbai",
     "heroP": "",
     "crumbs": "Home / Mumbai location",
-    "proseHtml": "<p>For a Mumbai flat, the cleaning plan often starts with access: how much floor space is clear, which cupboards can be emptied and whether the society has a preferred service window. Share these details when booking so the team can plan the visit.</p><p>Deepcleaning99.com provides home and commercial deep cleaning in Mumbai. You can book a full-home visit or choose kitchen, bathroom, sofa, mattress or carpet cleaning separately. Offices and other commercial properties are quoted according to the agreed areas and working conditions.</p><p>If you are moving into a flat, arrange cleaning before unpacking where possible. For an occupied home, clear the specific areas you want cleaned. Upholstery needs its own drying time, so mention any requirement to use the furniture soon after the visit.</p><p>For office enquiries, include the floor area, washrooms, pantry and permitted access hours. A square-foot figure alone does not tell us how much furniture or grease buildup the team will encounter.</p><p>Enter your Mumbai locality and pincode in the booking form. We will verify the appointment details and confirm team availability. Prices depend on the service, quantity, size and condition rather than a single city-wide flat charge.</p><p>FAQ: Do you cover my Mumbai locality? Share your pincode so our team can check the appointment and access requirements.</p><p>FAQ: Can I book home cleaning and sofa cleaning together? Yes. Select both or tell our team before the quote is finalised.</p><p>Links: Full Home Deep Cleaning / Sofa Cleaning / Commercial Cleaning</p>",
+    "proseHtml": "<p>For a Mumbai flat, the cleaning plan often starts with access: how much floor space is clear, which cupboards can be emptied and whether the society has a preferred service window. Share these details when booking so the team can plan the visit.</p><p>Deepcleaning99.com provides home and commercial deep cleaning in Mumbai. You can book a full-home visit or choose kitchen, bathroom, sofa, mattress or carpet cleaning separately. Offices and other commercial properties are quoted according to the agreed areas and working conditions.</p><p>If you are moving into a flat, arrange cleaning before unpacking where possible. For an occupied home, clear the specific areas you want cleaned. Upholstery needs its own drying time, so mention any requirement to use the furniture soon after the visit.</p><p>For office enquiries, include the floor area, washrooms, pantry and permitted access hours. A square-foot figure alone does not tell us how much furniture or grease buildup the team will encounter.</p><p>Enter your complete Mumbai address in the booking form. We will verify the appointment details and confirm team availability. Prices depend on the service, quantity, size and condition rather than a single city-wide flat charge.</p><p>FAQ: Do you cover my Mumbai locality? Share your pincode so our team can check the appointment and access requirements.</p><p>FAQ: Can I book home cleaning and sofa cleaning together? Yes. Select both or tell our team before the quote is finalised.</p><p>Links: Full Home Deep Cleaning / Sofa Cleaning / Commercial Cleaning</p>",
     "faqs": [],
     "dataService": null,
     "aside": {
@@ -501,11 +501,11 @@ export const pages = {
     "cards": []
   },
   "/prices/": {
-    "title": "Deep Cleaning Rates & 30% Launch Offer | Deepcleaning99",
-    "description": "Browse home and commercial cleaning packages, technician counts, time estimates and AMC rates. Prices exclude applicable GST.",
+    "title": "Deep Cleaning Prices and Package Details | Deepcleaning99",
+    "description": "Compare cleaning package prices and check the included work, minimum charges, discounts and total payable before booking with Deepcleaning99.",
     "eyebrow": "RATES & PACKAGES",
-    "h1": "A clear price for the work.",
-    "heroP": "30% off one-time cleaning service charges. Choose a package that fits your space.",
+    "h1": "Cleaning prices with the scope clearly shown",
+    "heroP": "We price full-home cleaning by the agreed property size and condition. Sofas are usually quoted by seat count, mattresses by size and quantity, and carpets by measured area.",
     "crumbs": "",
     "proseHtml": "",
     "faqs": [],
@@ -515,12 +515,12 @@ export const pages = {
   },
   "/privacy-notice/": {
     "title": "Privacy Notice | Deepcleaning99",
-    "description": "How booking information is used when you contact Deepcleaning99.",
+    "description": "Read how booking information is used to arrange cleaning services and respond to enquiries at Deepcleaning99.",
     "eyebrow": "",
     "h1": "Privacy notice",
     "heroP": "",
     "crumbs": "",
-    "proseHtml": "<h2>Details you choose to share</h2><p>The booking form prepares a WhatsApp message containing your name, phone number, address, selected service, property details and preferred appointment. You decide whether to send that message in WhatsApp. The form does not upload those details to a website booking database.</p><h2>How enquiries are used</h2><p>Details sent to our team are used to respond to your enquiry, prepare a quote, arrange the visit and handle service questions. Relevant appointment details may be shared with the assigned cleaning team.</p><h2>WhatsApp and other services</h2><p>WhatsApp handles messages under its own privacy terms. Your hosting provider may keep routine access logs. No advertising or analytics tracker is included in this website package.</p><h2>Contact us</h2><p>For questions or requests about information you have shared, call or WhatsApp 7710082627. Avoid sending identity documents or payment card details in the booking message.</p>",
+    "proseHtml": "<p>When you contact Deepcleaning99.com or request a service, you may provide your name, phone number, address, property details and photographs. We use booking information to respond to the enquiry, assess the work, arrange the appointment, prepare billing and handle service concerns.</p><p>Submitting the booking form saves the enquiry with our team. Booking details needed to complete the service may be shared with the assigned cleaning team. Please avoid uploading photographs that include identity documents, confidential records or other personal information unrelated to the work.</p><p>If you agree to receive offers, your contact information may also be used for those messages. You can ask us to stop promotional communication while still receiving messages needed for an active booking.</p><p>For questions about your information, call or WhatsApp 7710082627.</p>",
     "faqs": [],
     "dataService": null,
     "aside": null,
@@ -549,11 +549,19 @@ export const pages = {
     "h1": "Scheduled cleaning for homes and business premises",
     "heroP": "",
     "crumbs": "Home / Scheduled cleaning",
-    "proseHtml": "<p>If the same areas need attention at regular intervals, we can plan repeat visits instead of treating every appointment as a new enquiry. A cleaning AMC is an agreement for a set number of scheduled deep-cleaning visits.</p><p>For a home, you might arrange full-home visits at longer intervals and book the kitchen or bathrooms more often. Offices and commercial properties can agree on a schedule suited to their use, access and cleaning requirements.</p><p>The written plan should state the included services, quantities, visit frequency, price and payment terms. Upholstery drying needs and the condition at each visit must still be considered. A periodic deep-cleaning plan does not provide daily housekeeping staff.</p><p>If the property size or scope changes, tell us before the next appointment. Extra areas and additional items need a revised price. Offers on one-time jobs should not be assumed to apply to AMC contracts.</p><details><summary>How many visits are included?</summary><p>The number is specified in your quotation. Can I change a visit date? Contact us early so the team can check an alternative. Does the plan include pest control? Only if a separate pest-control service is expressly listed.</p></details>",
+    "proseHtml": "<p>If the same areas need attention at regular intervals, we can plan repeat visits instead of treating every appointment as a new enquiry. A cleaning AMC is an agreement for a set number of scheduled deep-cleaning visits.</p><p>For a home, you might arrange full-home visits at longer intervals and book the kitchen or bathrooms more often. Offices and commercial properties can agree on a schedule suited to their use, access and cleaning requirements.</p><p>The written plan should state the included services, quantities, visit frequency, price and payment terms. Upholstery drying needs and the condition at each visit must still be considered. A periodic deep-cleaning plan does not provide daily housekeeping staff.</p><p>If the property size or scope changes, tell us before the next appointment. Extra areas and additional items need a revised price. Offers on one-time jobs should not be assumed to apply to AMC contracts.</p><details><summary>How many visits are included?</summary><p>The number is specified in your quotation.</p></details><details><summary>Can I change a visit date?</summary><p>Contact us early so the team can check an alternative.</p></details><details><summary>Does the plan include pest control?</summary><p>Only if a separate pest-control service is expressly listed.</p></details>",
     "faqs": [
       {
         "q": "How many visits are included?",
-        "a": "The number is specified in your quotation. Can I change a visit date? Contact us early so the team can check an alternative. Does the plan include pest control? Only if a separate pest-control service is expressly listed."
+        "a": "The number is specified in your quotation."
+      },
+      {
+        "q": "Can I change a visit date?",
+        "a": "Contact us early so the team can check an alternative."
+      },
+      {
+        "q": "Does the plan include pest control?",
+        "a": "Only if a separate pest-control service is expressly listed."
       }
     ],
     "dataService": null,
@@ -564,13 +572,13 @@ export const pages = {
     "cards": []
   },
   "/service-quality/": {
-    "title": "Cleaning Quality & Service Concerns | Deepcleaning99",
-    "description": "Check the agreed cleaning scope and report any concern to the Deepcleaning99 team.",
-    "eyebrow": "",
-    "h1": "Check the work with us.",
+    "title": "Cleaning Quality and Rework Policy | Deepcleaning99",
+    "description": "Check how Deepcleaning99 handles missed cleaning areas, service concerns and corrective rework for the scope agreed in your booking.",
+    "eyebrow": "DEEPCLEANING99",
+    "h1": "Check the work with us before the visit ends",
     "heroP": "",
     "crumbs": "",
-    "proseHtml": "<p>Before the team leaves, review the areas included in your booking. Point out any missed area so it can be checked while the equipment is still on site.</p><h2>If you notice a concern later</h2><p>Contact 7710082627 promptly with your booking details, photographs and the area of concern. Our team will review it against the agreed scope and discuss the appropriate next step.</p><h2>What cleaning can achieve</h2><p>Cleaning does not repair scratches, damaged grout, discolouration or permanent etching. Some old stains and odours may remain. Upholstery and carpets require suitable drying time.</p><h2>One-time visits and scheduled plans</h2><p>A one-time service covers the agreed visit. It does not keep a property free from future dust or stains. A scheduled plan covers the visits listed in your quotation, with the same agreed scope.</p>",
+    "proseHtml": "<p>At the end of the service, please review the agreed areas with the cleaning team. If something within the scope needs more attention, let them know while they are there.</p><p>If you notice a missed area or a cleaning defect afterwards, contact us within 48 hours of service completion. Send the booking reference, a short description and photographs where possible. We will review the concern against the agreed scope.</p><p>Where an included area was missed or the cleaning was not completed as agreed, we will arrange one corrective rework visit without an additional cleaning charge. We aim to arrange this within seven days of a valid complaint, subject to access and mutually agreed availability.</p><p>This policy does not promise that the property will remain clean for a fixed number of weeks or months. New spills, fresh dirt, permanent stains, wear and repair work are outside corrective cleaning. Concerns about damage caused during service will be assessed separately; a stain exclusion is not a waiver of responsibility for service damage.</p><p><a href=\"/contact-us/\">Report a service concern</a></p>",
     "faqs": [],
     "dataService": null,
     "aside": null,

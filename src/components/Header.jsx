@@ -4,9 +4,12 @@ import Brand from './Brand';
 import site from '../data/site';
 
 const links = [
+  { to: '/', label: 'Home' },
   { to: '/#services', label: 'Services', hash: true },
-  { to: '/#how-it-works', label: 'How It Works', hash: true },
+  { to: '/residential-deep-cleaning/', label: 'Residential' },
+  { to: '/commercial-deep-cleaning/', label: 'Commercial' },
   { to: '/prices/', label: 'Prices' },
+  { to: '/about-us/', label: 'About' },
   { to: '/contact-us/', label: 'Contact' },
 ];
 
@@ -46,6 +49,7 @@ export default function Header() {
                 key={link.to}
                 to={link.to}
                 onClick={closeMenu}
+                end={link.to === '/'}
                 className={({ isActive }) => (isActive ? 'is-active' : undefined)}
               >
                 {link.label}
