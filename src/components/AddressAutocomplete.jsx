@@ -111,16 +111,22 @@ export default function AddressAutocomplete({
 
   return (
     <div className="address-autocomplete" ref={wrapRef}>
+      <input type="hidden" name={name} value={value} />
       <input
-        name={name}
         value={value}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
-        onFocus={() => setOpen(true)}
+        onFocus={() => {
+          setOpen(true);
+          if (value.trim().length >= MIN_SEARCH_LENGTH) fetchSuggestions(value);
+        }}
         placeholder={placeholder}
         required={required}
         maxLength={maxLength}
         autoComplete="off"
+        autoCorrect="off"
+        spellCheck={false}
+        aria-label="Complete address"
         role="combobox"
         aria-autocomplete="list"
         aria-expanded={showList}

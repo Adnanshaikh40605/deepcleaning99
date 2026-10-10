@@ -590,7 +590,7 @@ small,
 
 .address-suggestions {
   position: absolute;
-  z-index: 30;
+  z-index: 40;
   top: calc(100% + 4px);
   left: 0;
   right: 0;
