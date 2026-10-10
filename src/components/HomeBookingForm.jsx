@@ -1,5 +1,4 @@
 import { useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
 import site from '../data/site';
 import {
   calcOneTime,
@@ -30,7 +29,6 @@ export default function HomeBookingForm() {
   const [packageId, setPackageId] = useState('');
   const [quantity, setQuantity] = useState(1);
   const [city, setCity] = useState(site.cities[0]);
-  const [consent, setConsent] = useState(false);
   const [status, setStatus] = useState(null);
   const [statusUrl, setStatusUrl] = useState('');
   const [submitting, setSubmitting] = useState(false);
@@ -322,20 +320,6 @@ export default function HomeBookingForm() {
           </p>
         </>
       ) : null}
-
-      <label className="home-consent">
-        <input
-          name="consent"
-          type="checkbox"
-          required
-          checked={consent}
-          onChange={(event) => setConsent(event.target.checked)}
-        />
-        <span>
-          I agree to the <Link to="/booking-terms/">booking terms</Link> and{' '}
-          <Link to="/privacy-notice/">privacy notice</Link>.
-        </span>
-      </label>
 
       <button
         className="button full"

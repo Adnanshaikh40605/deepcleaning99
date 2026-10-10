@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import site from '../data/site';
 import {
   calcEstimate,
@@ -40,7 +40,6 @@ export default function BookingForm() {
       ? params.get('city')
       : site.cities[0],
   );
-  const [consent, setConsent] = useState(false);
   const [status, setStatus] = useState(null);
   const [statusUrl, setStatusUrl] = useState('');
   const [submitting, setSubmitting] = useState(false);
@@ -323,21 +322,6 @@ export default function BookingForm() {
             />
           </label>
         </div>
-
-        <label className="check">
-          <input
-            type="checkbox"
-            name="consent"
-            required
-            checked={consent}
-            onChange={(event) => setConsent(event.target.checked)}
-          />
-          <span>
-            I agree to the <Link to="/booking-terms/">booking terms</Link> and{' '}
-            <Link to="/privacy-notice/">privacy notice</Link>, and allow the
-            team to contact me about this request.
-          </span>
-        </label>
 
         <button
           className="button full"

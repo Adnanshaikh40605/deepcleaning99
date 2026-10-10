@@ -7,57 +7,57 @@ const services = [
   {
     title: 'Full Home Deep Cleaning',
     href: '/full-home-deep-cleaning/',
-    note: 'Cleaning for furnished and empty flats, bungalows and villas. Choose your property size and check the areas included in your package.',
+    note: 'Furnished and empty flats, bungalows and villas.',
     regular: 3499,
     price: 2449,
-    photo: 1,
+    image: '/assets/services/full-home.jpg',
   },
   {
     title: 'Kitchen Deep Cleaning',
     href: '/kitchen-deep-cleaning/',
-    note: 'Attention to grease on accessible tiles, countertops, sinks and cabinets. Share the kitchen condition so we can recommend the right scope.',
+    note: 'Grease on tiles, counters, sinks and cabinets.',
     regular: 1499,
     price: 1049,
-    photo: 2,
+    image: '/assets/services/kitchen.jpg',
   },
   {
     title: 'Bathroom Deep Cleaning',
     href: '/bathroom-deep-cleaning/',
-    note: 'Cleaning for tiles, toilets, basins and suitable fittings, including accessible soap residue and scale buildup.',
+    note: 'Tiles, toilets, basins and fittings.',
     regular: 699,
     price: 489,
-    photo: 3,
+    image: '/assets/services/bathroom.jpg',
   },
   {
     title: 'Sofa Cleaning',
     href: '/sofa-cleaning/',
-    note: 'Fabric sofa cleaning using a method suited to the upholstery. Leather sofas need a separate cleaning process.',
+    note: 'Fabric sofas. Leather is cleaned separately.',
     regular: 899,
     price: 629,
-    photo: 4,
+    image: '/assets/services/sofa.jpg',
   },
   {
     title: 'Mattress Cleaning',
     href: '/mattress-cleaning/',
-    note: 'Vacuuming and suitable surface cleaning for single, double and king-size mattresses. The material and condition determine the method.',
+    note: 'Single, double and king-size mattresses.',
     regular: 699,
     price: 489,
-    photo: 5,
+    image: '/assets/services/mattress.jpg',
   },
   {
     title: 'Carpet Cleaning',
     href: '/carpet-cleaning/',
-    note: 'Cleaning for suitable rugs and fitted carpets at homes and commercial properties. Share the size and material for a quote.',
+    note: 'Rugs and fitted carpets at home or office.',
     regular: 960,
     price: 672,
-    photo: 6,
+    image: '/assets/services/carpet.jpg',
   },
   {
     title: 'Office Deep Cleaning',
     href: '/office-deep-cleaning/',
-    note: 'Scheduled cleaning for workstations, floors, accessible glass, pantries and washrooms, with the scope agreed before the visit.',
+    note: 'Desks, floors, glass, pantry and washrooms.',
     office: true,
-    photo: 7,
+    image: '/assets/services/office.jpg',
   },
 ];
 
@@ -120,6 +120,7 @@ export default function Home() {
               fetchPriority="high"
             />
             <div className="hero-copy">
+              <div className="hero-panel">
               <h1>
                 Deep cleaning
                 <br />
@@ -163,6 +164,7 @@ export default function Home() {
                   </strong>
                 </div>
               </div>
+              </div>
             </div>
           </div>
           <HomeBookingForm />
@@ -182,18 +184,18 @@ export default function Home() {
         <div className="service-grid">
           {services.map((item) => (
             <Link className="service-card" key={item.href} to={item.href}>
-              <div
-                className={`service-photo photo-${item.photo}`}
-                role="img"
-                aria-label={item.title}
+              <img
+                className="service-photo"
+                src={item.image}
+                alt=""
+                width={280}
+                height={180}
               />
               <div className="service-copy">
                 <h3>{item.title}</h3>
                 <p>{item.note}</p>
                 {item.office ? (
-                  <p className="office-note">
-                    Custom quote for your office or commercial space.
-                  </p>
+                  <p className="office-note">Custom quote for your space.</p>
                 ) : (
                   <>
                     <div className="service-price">
