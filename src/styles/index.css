@@ -72,12 +72,21 @@ textarea {
 
 a:focus-visible,
 button:focus-visible,
+summary:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 2px;
+}
+
+input:focus,
+select:focus,
+textarea:focus,
 input:focus-visible,
 select:focus-visible,
-textarea:focus-visible,
-summary:focus-visible {
-  outline: 3px solid #f0b429;
-  outline-offset: 3px;
+textarea:focus-visible {
+  outline: none;
+  outline-offset: 0;
+  border-color: var(--green);
+  box-shadow: none;
 }
 
 .wrap {
@@ -330,7 +339,7 @@ small,
   position: relative;
   border-radius: 16px;
   overflow: hidden;
-  min-height: 420px;
+  min-height: 0;
   background: #dceaf4;
 }
 
@@ -339,7 +348,7 @@ small,
   height: 100%;
   object-fit: cover;
   object-position: 28% center;
-  min-height: 420px;
+  min-height: 0;
 }
 
 @media (min-width: 901px) {
@@ -348,7 +357,7 @@ small,
   }
 
   .hero-visual {
-    aspect-ratio: 16 / 9;
+    aspect-ratio: 32 / 9;
     min-height: 0;
     background: url('/assets/hero-desktop.jpg') center center / cover no-repeat;
   }
@@ -359,7 +368,6 @@ small,
 
   .hero-copy {
     background: none;
-    padding: 1.1rem;
   }
 }
 
@@ -445,6 +453,41 @@ small,
   font-size: 1.1rem;
 }
 
+@media (min-width: 901px) {
+  .hero-copy {
+    padding: 0.55rem;
+  }
+
+  .hero-panel {
+    padding: 0.6rem 0.75rem 0.55rem;
+  }
+
+  .hero-copy h1 {
+    font-size: clamp(1.15rem, 1.45vw, 1.45rem);
+    line-height: 1.02;
+    margin-bottom: 0.2rem;
+  }
+
+  .hero-locations {
+    font-size: 0.82rem;
+  }
+
+  .hero-benefits {
+    gap: 0.65rem;
+    margin-top: 0.45rem;
+  }
+
+  .hero-benefits strong {
+    font-size: 0.7rem;
+  }
+
+  .benefit-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    font-size: 0.8rem;
+  }
+}
+
 /* Home booking */
 .home-booking {
   background: var(--white);
@@ -486,8 +529,21 @@ small,
   padding: 0.5rem 0.65rem;
   border: 1px solid #c9d6e4;
   border-radius: 7px;
-  background: #fff;
+  background-color: #fff;
   color: var(--navy);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.home-booking select,
+.booking-form select,
+.price-filters select {
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 2.1rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='none' stroke='%23082956' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round' d='M1 1.5 6 6.5 11 1.5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 12px 8px;
 }
 
 .chip-group {
@@ -1228,7 +1284,7 @@ del {
 
   .hero-visual,
   .hero-image {
-    min-height: 380px;
+    min-height: 0;
   }
 
   .service-card,
@@ -1260,9 +1316,9 @@ del {
   }
 
   .hero-visual {
-    aspect-ratio: 682 / 1024;
+    aspect-ratio: 682 / 512;
     min-height: 0;
-    max-height: 78vh;
+    max-height: 39vh;
   }
 
   .hero-image {
@@ -1388,7 +1444,7 @@ del {
   }
 
   .hero-visual {
-    max-height: 70vh;
+    max-height: 35vh;
   }
 
   .hero-copy {
@@ -1416,8 +1472,8 @@ del {
   }
 
   .service-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 0.7rem;
+    grid-template-columns: 1fr;
+    gap: 0.85rem;
     margin-top: 0.9rem;
   }
 
@@ -1430,39 +1486,49 @@ del {
     min-height: 0;
   }
 
-  .service-card:last-child {
-    grid-column: 1 / -1;
-  }
-
   .service-photo {
     width: 100%;
-    height: 132px;
+    height: 190px;
     min-height: 0;
     border-radius: 0;
+    object-position: center 38%;
   }
 
   .service-copy {
-    padding: 0.5rem 0.4rem 0.5rem 0;
-    flex: 1;
+    padding: 0.85rem 1rem 1rem;
     min-width: 0;
   }
 
   .service-copy h3 {
-    font-size: 0.85rem;
+    font-size: 1.05rem;
+    overflow-wrap: normal;
   }
 
   .service-copy > p {
     display: block;
-    font-size: 0.78rem;
-    margin-bottom: 0.4rem;
+    font-size: 0.9rem;
+    line-height: 1.45;
+    margin-bottom: 0.55rem;
+    overflow-wrap: normal;
+  }
+
+  .service-price {
+    flex-wrap: nowrap;
+    gap: 0.55rem;
   }
 
   .service-price strong {
-    font-size: 0.95rem;
+    font-size: 1.15rem;
+    white-space: nowrap;
   }
 
   .service-price del {
-    font-size: 0.7rem;
+    font-size: 0.85rem;
+    white-space: nowrap;
+  }
+
+  .service-copy .offer {
+    margin-top: 0.45rem;
   }
 
   .site-footer {
@@ -1551,7 +1617,7 @@ del {
   }
 
   .service-photo {
-    height: 118px;
+    height: 176px;
   }
 
   .mobile-bar {
