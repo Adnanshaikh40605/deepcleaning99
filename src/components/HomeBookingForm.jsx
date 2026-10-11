@@ -12,6 +12,7 @@ import {
 import { digitsOnlyPhone, submitDeepCleaningInquiry } from '../utils/api';
 import { cityFromAddress } from '../utils/googleMaps';
 import AddressAutocomplete from './AddressAutocomplete';
+import ChoiceSelect from './ChoiceSelect';
 
 const SIZES = ['1RK', '1BHK', '2BHK', '3BHK', '4BHK'];
 const TYPES = ['Furnished', 'Empty'];
@@ -24,41 +25,81 @@ const TIMES = [
 
 export default function HomeBookingForm() {
   const navigate = useNavigate();
-  const [service, setService] = useState(site.services[0]);
+  const [services, setServices] = useState([site.services[0]]);
+  const selectedServices = services.length ? services : [site.services[0]];
   const [size, setSize] = useState('1BHK');
   const [type, setType] = useState('Furnished');
   const [packageId, setPackageId] = useState('');
   const [quantity, setQuantity] = useState(1);
   const [city, setCity] = useState(site.cities[0]);
+  const [time, setTime] = useState(TIMES[0]);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
 
-  const isFullHome = service === 'Full Home Deep Cleaning';
+  const includesFullHome = selectedServices.includes('Full Home Deep Cleaning');
+  const singleService = selectedServices.length === 1 ? selectedServices[0] : '';
+  const showPackage = singleService && singleService !== 'Full Home Deep Cleaning';
 
   const packages = useMemo(() => {
-    if (isFullHome) return [];
+    if (!showPackage) return [];
     const segment =
-      service === 'Office Deep Cleaning' ? 'Commercial' : 'Residential';
-    return ratesForService(service, segment);
-  }, [service, isFullHome]);
+      singleService === 'Office Deep Cleaning' ? 'Commercial' : 'Residential';
+    return ratesForService(singleService, segment);
+  }, [showPackage, singleService]);
 
-  const current = useMemo(() => {
-    if (isFullHome) return findFullHomePackage(size, type) ?? null;
-    const selected =
-      packages.find((rate) => rate.id === packageId) || packages[0] || null;
-    return selected;
-  }, [isFullHome, size, type, packages, packageId]);
+  const lineItems = useMemo(() => {
+    return selectedServices
+      .map((name) => {
+        if (name === 'Full Home Deep Cleaning') {
+          const rate = findFullHomePackage(size, type);
+          return rate ? { service: name, rate, quantity: 1 } : null;
+        }
+        const segment =
+          name === 'Office Deep Cleaning' ? 'Commercial' : 'Residential';
+        const list = ratesForService(name, segment);
+        const rate =
+          selectedServices.length === 1
+            ? list.find((item) => item.id === packageId) || list[0]
+            : list[0];
+        return rate
+          ? {
+              service: name,
+              rate,
+              quantity: selectedServices.length === 1 ? quantity : rate.quantity,
+            }
+          : null;
+      })
+      .filter(Boolean);
+  }, [selectedServices, size, type, packageId, quantity]);
 
-  const pricing = current ? calcOneTime(current, quantity) : null;
+  const current = lineItems.length === 1 ? lineItems[0].rate : null;
+
+  const pricing = useMemo(() => {
+    if (!lineItems.length) return null;
+    return lineItems.reduce(
+      (sum, item) => {
+        const price = calcOneTime(item.rate, item.quantity);
+        return {
+          base: sum.base + price.base,
+          saving: sum.saving + price.saving,
+          total: sum.total + price.total,
+        };
+      },
+      { base: 0, saving: 0, total: 0 },
+    );
+  }, [lineItems]);
+
   const invalid =
-    current && isQuantityOutOfRange(current, quantity);
+    lineItems.length === 1 &&
+    isQuantityOutOfRange(lineItems[0].rate, lineItems[0].quantity);
 
   function handleServiceChange(next) {
-    setService(next);
-    if (next === 'Full Home Deep Cleaning') return;
+    if (!next.length) return;
+    setServices(next);
+    if (next.length !== 1 || next[0] === 'Full Home Deep Cleaning') return;
     const segment =
-      next === 'Office Deep Cleaning' ? 'Commercial' : 'Residential';
-    const matching = ratesForService(next, segment);
+      next[0] === 'Office Deep Cleaning' ? 'Commercial' : 'Residential';
+    const matching = ratesForService(next[0], segment);
     const first = matching[0];
     if (first) {
       setPackageId(first.id);
@@ -76,7 +117,7 @@ export default function HomeBookingForm() {
 
   async function handleSubmit(event) {
     event.preventDefault();
-    if (!current || !pricing || invalid || submitting) return;
+    if (!lineItems.length || !pricing || invalid || submitting) return;
     const form = new FormData(event.currentTarget);
     const phone = digitsOnlyPhone(form.get('phone'));
     const name = String(form.get('name') || '').trim();
@@ -84,11 +125,19 @@ export default function HomeBookingForm() {
     const preferredDate = String(form.get('date') || '').trim();
     const preferredTime = String(form.get('time') || '').trim();
 
+    if (!address || !preferredDate || !name || !/^[6-9]\d{9}$/.test(phone)) {
+      setError('Please fill in your address, date, name and mobile number.');
+      return;
+    }
+
     setError(null);
     setSubmitting(true);
 
-    const segment =
-      service === 'Office Deep Cleaning' ? 'Commercial' : 'Residential';
+    const segment = selectedServices.includes('Office Deep Cleaning')
+      ? 'Commercial'
+      : 'Residential';
+    const serviceLabel = selectedServices.join(', ');
+    const packageLabel = lineItems.map((item) => item.rate.package).join(', ');
 
     try {
       await submitDeepCleaningInquiry({
@@ -97,14 +146,14 @@ export default function HomeBookingForm() {
         city,
         address,
         segment,
-        service,
-        package_name: current.package,
-        package_id: current.id || '',
-        quantity: String(quantity),
-        unit: current.unit || '',
+        service: serviceLabel,
+        package_name: packageLabel,
+        package_id: lineItems.map((item) => item.rate.id).join(', '),
+        quantity: lineItems.map((item) => item.quantity).join(', '),
+        unit: lineItems.map((item) => item.rate.unit || '').join(', '),
         plan: 'one',
-        property_size: isFullHome ? size : '',
-        property_type: isFullHome ? type : '',
+        property_size: includesFullHome ? size : '',
+        property_type: includesFullHome ? type : '',
         preferred_date: preferredDate,
         preferred_time: preferredTime,
         estimated_price: pricing.total,
@@ -118,8 +167,8 @@ export default function HomeBookingForm() {
         replace: true,
         state: {
           name,
-          service,
-          packageName: current.package,
+          service: serviceLabel,
+          packageName: packageLabel,
           city,
           address,
           preferredDate,
@@ -135,25 +184,19 @@ export default function HomeBookingForm() {
   }
 
   return (
-    <form id="home-booking" className="home-booking" onSubmit={handleSubmit}>
+    <form id="home-booking" className="home-booking" noValidate onSubmit={handleSubmit}>
       <h2>Book Your Cleaning</h2>
 
-      <label>
-        Service
-        <select
-          name="service"
-          value={service}
-          onChange={(event) => handleServiceChange(event.target.value)}
-        >
-          {site.services.map((item) => (
-            <option key={item} value={item}>
-              {item}
-            </option>
-          ))}
-        </select>
-      </label>
+      <ChoiceSelect
+        label="Service"
+        name="service"
+        multiple
+        value={selectedServices}
+        options={site.services}
+        onChange={handleServiceChange}
+      />
 
-      {isFullHome ? (
+      {includesFullHome ? (
         <div id="home-property">
           <span className="field-label">Property Size</span>
           <div className="chip-group size-chips" role="group" aria-label="Property size">
@@ -184,21 +227,15 @@ export default function HomeBookingForm() {
             ))}
           </div>
         </div>
-      ) : (
+      ) : null}
+      {showPackage ? (
         <div id="home-package-fields">
-          <label>
-            Package
-            <select
-              value={current?.id || ''}
-              onChange={(event) => handlePackageChange(event.target.value)}
-            >
-              {packages.map((rate) => (
-                <option key={rate.id} value={rate.id}>
-                  {rate.package}
-                </option>
-              ))}
-            </select>
-          </label>
+          <ChoiceSelect
+            label="Package"
+            value={current?.id || ''}
+            options={packages.map((rate) => ({ value: rate.id, label: rate.package }))}
+            onChange={handlePackageChange}
+          />
           <label>
             {current?.unit === 'sq ft'
               ? 'Area (sq ft)'
@@ -214,28 +251,14 @@ export default function HomeBookingForm() {
             />
           </label>
         </div>
-      )}
+      ) : null}
 
       <div className="home-form-grid">
-        <label className="wide">
-          City
-          <select
-            name="city"
-            value={city}
-            onChange={(event) => setCity(event.target.value)}
-          >
-            {site.cities.map((item) => (
-              <option key={item} value={item}>
-                {item}
-              </option>
-            ))}
-          </select>
-        </label>
         <label className="wide">
           Complete Address
           <AddressAutocomplete
             name="address"
-            placeholder="Start typing your address"
+            placeholder="Type your address"
             required
             maxLength={300}
             onSelect={(address) => {
@@ -245,17 +268,16 @@ export default function HomeBookingForm() {
           />
         </label>
         <label>
-          Preferred Date
+          Date
           <input name="date" type="date" min={todayISO()} required />
         </label>
-        <label>
-          Preferred Time
-          <select name="time" defaultValue={TIMES[0]}>
-            {TIMES.map((item) => (
-              <option key={item}>{item}</option>
-            ))}
-          </select>
-        </label>
+        <ChoiceSelect
+          label="Time"
+          name="time"
+          value={time}
+          options={TIMES}
+          onChange={setTime}
+        />
         <label>
           Name
           <input
@@ -270,7 +292,7 @@ export default function HomeBookingForm() {
           Mobile Number
           <input
             name="phone"
-            placeholder="10-digit mobile number"
+            placeholder="10-digit number"
             type="tel"
             inputMode="tel"
             pattern="(?:\+91[ -]?)?[6-9][0-9]{9}"
@@ -280,33 +302,44 @@ export default function HomeBookingForm() {
         </label>
       </div>
 
-      {pricing && current ? (
+      {pricing && lineItems.length ? (
         <>
           <div className="home-price-strip">
             <div className="home-price-copy">
               <strong>
-                {isFullHome ? `${size} · ${type}` : current.package}
-                <span> · One-time</span>
+                {selectedServices.length > 1
+                  ? `${selectedServices.length} services`
+                  : includesFullHome
+                    ? `${size} ${type === 'Furnished' ? 'Furnishing' : type}`
+                    : current?.package}
               </strong>
-              <small>Price (Excluding GST)</small>
+              <small>Price (Excl. GST)</small>
+              <div className="home-price-meta">
+                <del>{money(pricing.base)}</del>
+                <span className="offer">30% OFF</span>
+              </div>
             </div>
-            <div className="home-price-figures">
-              <del>{money(pricing.base)}</del>
-              <span className="offer">30% OFF</span>
-              <b>{money(pricing.total)}</b>
-            </div>
+            <b className="home-price-now">{money(pricing.total)}</b>
           </div>
           <p className="home-scope">
-            {current.note} · {current.team}{' '}
-            {current.team > 1 ? 'technicians' : 'technician'}
+            {selectedServices.length > 1
+              ? 'Combined estimate for the selected services. Final scope is confirmed by our team.'
+              : `${current.note} · ${current.team} ${
+                  current.team > 1 ? 'technicians' : 'technician'
+                }`}
           </p>
         </>
       ) : null}
 
+      {error ? (
+        <p className="form-error" role="alert">
+          {error}
+        </p>
+      ) : null}
       <button
         className="button full"
         type="submit"
-        disabled={!current || invalid || submitting}
+        disabled={!lineItems.length || invalid || submitting}
       >
         {submitting ? 'Submitting…' : 'Confirm Booking'}
       </button>
@@ -317,11 +350,6 @@ export default function HomeBookingForm() {
       {invalid ? (
         <p className="form-error" role="alert">
           Choose the package for your actual area, or call for a custom quote.
-        </p>
-      ) : null}
-      {error ? (
-        <p className="form-error" role="alert">
-          {error}
         </p>
       ) : null}
     </form>

@@ -100,7 +100,7 @@ export default function BookingForm() {
     const form = new FormData(event.currentTarget);
     const name = String(form.get('name') || '').trim();
     const phone = digitsOnlyPhone(form.get('phone'));
-    const formCity = String(form.get('city') || city).trim();
+    const formCity = city;
     const address = String(form.get('address') || '').trim();
     const preferredDate = String(form.get('date') || '').trim();
     const preferredTime = String(form.get('time') || '').trim();
@@ -258,18 +258,6 @@ export default function BookingForm() {
             />
           </label>
           <label className="wide">
-            City
-            <select
-              name="city"
-              value={city}
-              onChange={(event) => setCity(event.target.value)}
-            >
-              {site.cities.map((item) => (
-                <option key={item}>{item}</option>
-              ))}
-            </select>
-          </label>
-          <label className="wide">
             Address
             <AddressAutocomplete
               name="address"
@@ -283,11 +271,11 @@ export default function BookingForm() {
             />
           </label>
           <label>
-            Preferred date
+            Date
             <input name="date" type="date" min={todayISO()} required />
           </label>
           <label>
-            Preferred time
+            Time
             <select name="time" defaultValue={TIMES[0]}>
               {TIMES.map((item) => (
                 <option key={item}>{item}</option>

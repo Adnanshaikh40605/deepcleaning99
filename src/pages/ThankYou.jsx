@@ -27,8 +27,8 @@ export default function ThankYou() {
         ['Package', booking.packageName],
         ['City', booking.city],
         ['Address', booking.address],
-        ['Preferred date', formatDate(booking.preferredDate)],
-        ['Preferred time', booking.preferredTime],
+        ['Date', formatDate(booking.preferredDate)],
+        ['Time', booking.preferredTime],
         ['Estimate', booking.price ? `${money(booking.price)} · GST extra` : ''],
       ].filter(([, value]) => value)
     : [];
