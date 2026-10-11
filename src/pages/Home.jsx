@@ -109,62 +109,51 @@ export default function Home() {
   return (
     <>
       <section className="hero-stage">
-        <div className="wrap hero-grid">
-          <div className="hero-visual">
-            <img
-              className="hero-image"
-              src="/assets/hero-mobile.jpg"
-              width={682}
-              height={1024}
-              alt="Cleaning team deep cleaning a bright home, including the sofa, kitchen, windows and bathroom"
-              fetchPriority="high"
-            />
-            <div className="hero-copy">
-              <div className="hero-panel">
-              <h1>
-                Deep cleaning
-                <br />
-                for your home
-                <br />
-                <em>and workplace</em>
-              </h1>
-              <p className="hero-locations">
-                Mumbai · Navi Mumbai · Thane
-                <span>Pune · Lonavala</span>
-              </p>
-              <div className="hero-benefits">
-                <div>
-                  <span className="benefit-icon" aria-hidden="true">
-                    ✓
-                  </span>
-                  <strong>
-                    Trained
-                    <br />
-                    Cleaning Teams
-                  </strong>
-                </div>
-                <div>
-                  <span className="benefit-icon" aria-hidden="true">
-                    ✓
-                  </span>
-                  <strong>
-                    Professional
-                    <br />
-                    Equipment
-                  </strong>
-                </div>
-                <div>
-                  <span className="benefit-icon" aria-hidden="true">
-                    ✓
-                  </span>
-                  <strong>
-                    Clear
-                    <br />
-                    Service Scope
-                  </strong>
-                </div>
+        <div className="wrap hero-layout">
+          <div className="hero-intro">
+            <h1>
+              Deep cleaning
+              <br />
+              for your home
+              <br />
+              <em>and workplace</em>
+            </h1>
+            <p className="hero-locations">
+              Mumbai · Navi Mumbai · Thane
+              <span>Pune · Lonavala</span>
+            </p>
+            <div className="hero-benefits">
+              <div>
+                <span className="benefit-icon" aria-hidden="true">
+                  ✓
+                </span>
+                <strong>Trained cleaning teams</strong>
               </div>
+              <div>
+                <span className="benefit-icon" aria-hidden="true">
+                  ✓
+                </span>
+                <strong>Professional equipment</strong>
               </div>
+              <div>
+                <span className="benefit-icon" aria-hidden="true">
+                  ✓
+                </span>
+                <strong>Clear service scope</strong>
+              </div>
+            </div>
+            <div className="hero-banner">
+              {services.map((item) => (
+                <Link key={item.href} to={item.href}>
+                  <img
+                    src={item.image.replace('/services/', '/services/banner/')}
+                    alt=""
+                    width={160}
+                    height={160}
+                  />
+                  <span>{item.title.replace(' Deep Cleaning', '').replace(' Cleaning', '')}</span>
+                </Link>
+              ))}
             </div>
           </div>
           <HomeBookingForm />
@@ -186,10 +175,10 @@ export default function Home() {
             <Link className="service-card" key={item.href} to={item.href}>
               <img
                 className="service-photo"
-                src={item.image}
+                src={item.image.replace('/services/', '/services/banner/')}
                 alt=""
-                width={280}
-                height={180}
+                width={480}
+                height={360}
               />
               <div className="service-copy">
                 <h3>{item.title}</h3>

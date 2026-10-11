@@ -7,6 +7,7 @@ import Guides from './pages/Guides';
 import Home from './pages/Home';
 import NotFound from './pages/NotFound';
 import Prices from './pages/Prices';
+import ThankYou from './pages/ThankYou';
 
 const contentRoutes = [
   '/about-us/',
@@ -52,6 +53,8 @@ export default function App() {
           <Route path="cleaning-amc/" element={<Navigate to="/scheduled-cleaning/" replace />} />
           <Route path="book-cleaning" element={<Navigate to="/book-cleaning/" replace />} />
           <Route path="book-cleaning/" element={<BookCleaning />} />
+          <Route path="thank-you" element={<Navigate to="/thank-you/" replace />} />
+          <Route path="thank-you/" element={<ThankYou />} />
           <Route path="contact-us" element={<Navigate to="/contact-us/" replace />} />
           <Route path="contact-us/" element={<Contact />} />
           <Route path="guides" element={<Navigate to="/guides/" replace />} />

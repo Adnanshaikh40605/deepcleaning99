@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import site from '../data/site';
 import {
   calcEstimate,
@@ -9,7 +9,6 @@ import {
 } from '../utils/pricing';
 import { digitsOnlyPhone, submitDeepCleaningInquiry } from '../utils/api';
 import { cityFromAddress } from '../utils/googleMaps';
-import { openWhatsApp } from '../utils/whatsapp';
 import AddressAutocomplete from './AddressAutocomplete';
 
 const TIMES = [
@@ -20,6 +19,7 @@ const TIMES = [
 ];
 
 export default function BookingForm() {
+  const navigate = useNavigate();
   const [params] = useSearchParams();
   const chosen = site.rates.find((rate) => rate.id === params.get('package'));
 
@@ -40,8 +40,6 @@ export default function BookingForm() {
       ? params.get('city')
       : site.cities[0],
   );
-  const [status, setStatus] = useState(null);
-  const [statusUrl, setStatusUrl] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
 
@@ -109,8 +107,6 @@ export default function BookingForm() {
     const notes = String(form.get('notes') || '').trim();
 
     setError(null);
-    setStatus(null);
-    setStatusUrl('');
     setSubmitting(true);
 
     try {
@@ -137,33 +133,19 @@ export default function BookingForm() {
         page_url: typeof window !== 'undefined' ? window.location.href : '',
       });
 
-      const message = [
-        'Hello Deepcleaning99, I would like to request a cleaning booking.',
-        `Name: ${name}`,
-        `Mobile: ${phone}`,
-        `Property: ${segment}`,
-        `Service: ${service}`,
-        `Package: ${current.package}`,
-        `Quantity: ${activeQuantity} ${current.unit}`,
-        `Plan: ${plan === 'amc' ? 'AMC / scheduled cleaning' : 'One-time · 30% launch offer'}`,
-        `Service estimate (excluding applicable GST): ${money(estimate.total)}`,
-        plan === 'amc' && estimate.amc
-          ? `Plan: ${estimate.amc.visits} visits/year, ${money(estimate.amc.perVisit)} per visit`
-          : '',
-        `City: ${formCity}`,
-        `Address: ${address}`,
-        `Preferred appointment: ${preferredDate} · ${preferredTime}`,
-        notes ? `Notes: ${notes}` : '',
-        'Please confirm the final scope, tax-inclusive quote and appointment availability.',
-      ]
-        .filter(Boolean)
-        .join('\n');
-
-      const url = openWhatsApp(message);
-      setStatus(
-        'Booking request saved. Our team will contact you shortly. You can also send the same details on WhatsApp.',
-      );
-      setStatusUrl(url);
+      navigate('/thank-you/', {
+        replace: true,
+        state: {
+          name,
+          service,
+          packageName: current.package,
+          city: formCity,
+          address,
+          preferredDate,
+          preferredTime,
+          price: estimate.total,
+        },
+      });
     } catch (err) {
       setError(err?.message || 'Could not submit booking request. Please try again.');
     } finally {
@@ -345,21 +327,6 @@ export default function BookingForm() {
           <p className="form-error" role="alert">
             {error}
           </p>
-        ) : null}
-        {status ? (
-          <div id="booking-status" role="status" aria-live="polite">
-            {status}{' '}
-            {statusUrl ? (
-              <a
-                className="text-link"
-                href={statusUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Open WhatsApp request
-              </a>
-            ) : null}
-          </div>
         ) : null}
       </form>
 

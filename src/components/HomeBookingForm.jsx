@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import site from '../data/site';
 import {
   calcOneTime,
@@ -10,7 +11,6 @@ import {
 } from '../utils/pricing';
 import { digitsOnlyPhone, submitDeepCleaningInquiry } from '../utils/api';
 import { cityFromAddress } from '../utils/googleMaps';
-import { openWhatsApp } from '../utils/whatsapp';
 import AddressAutocomplete from './AddressAutocomplete';
 
 const SIZES = ['1RK', '1BHK', '2BHK', '3BHK', '4BHK'];
@@ -23,14 +23,13 @@ const TIMES = [
 ];
 
 export default function HomeBookingForm() {
+  const navigate = useNavigate();
   const [service, setService] = useState(site.services[0]);
   const [size, setSize] = useState('1BHK');
   const [type, setType] = useState('Furnished');
   const [packageId, setPackageId] = useState('');
   const [quantity, setQuantity] = useState(1);
   const [city, setCity] = useState(site.cities[0]);
-  const [status, setStatus] = useState(null);
-  const [statusUrl, setStatusUrl] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
 
@@ -56,7 +55,6 @@ export default function HomeBookingForm() {
 
   function handleServiceChange(next) {
     setService(next);
-    setStatus(null);
     if (next === 'Full Home Deep Cleaning') return;
     const segment =
       next === 'Office Deep Cleaning' ? 'Commercial' : 'Residential';
@@ -87,8 +85,6 @@ export default function HomeBookingForm() {
     const preferredTime = String(form.get('time') || '').trim();
 
     setError(null);
-    setStatus(null);
-    setStatusUrl('');
     setSubmitting(true);
 
     const segment =
@@ -118,28 +114,19 @@ export default function HomeBookingForm() {
         page_url: typeof window !== 'undefined' ? window.location.href : '',
       });
 
-      const message = [
-        'Hello Deepcleaning99, please confirm my cleaning booking request.',
-        `Name: ${name}`,
-        `Mobile: ${phone}`,
-        `Service: ${service}`,
-        `Package: ${current.package}`,
-        `Quantity: ${quantity} ${current.unit}`,
-        `Regular service charge: ${money(pricing.base)}`,
-        `30% launch discount: ${money(pricing.saving)}`,
-        `Service estimate (GST extra): ${money(pricing.total)}`,
-        `City: ${city}`,
-        `Address: ${address}`,
-        `Preferred date: ${preferredDate}`,
-        `Preferred time: ${preferredTime}`,
-        'Please confirm the scope, final tax-inclusive price and available appointment.',
-      ].join('\n');
-
-      const url = openWhatsApp(message);
-      setStatus(
-        'Booking request saved. Our team will contact you shortly. You can also send the same details on WhatsApp.',
-      );
-      setStatusUrl(url);
+      navigate('/thank-you/', {
+        replace: true,
+        state: {
+          name,
+          service,
+          packageName: current.package,
+          city,
+          address,
+          preferredDate,
+          preferredTime,
+          price: pricing.total,
+        },
+      });
     } catch (err) {
       setError(err?.message || 'Could not submit booking request. Please try again.');
     } finally {
@@ -296,23 +283,18 @@ export default function HomeBookingForm() {
       {pricing && current ? (
         <>
           <div className="home-price-strip">
-            <div>
-              <small>Regular Price</small>
+            <div className="home-price-copy">
+              <strong>
+                {isFullHome ? `${size} · ${type}` : current.package}
+                <span> · One-time</span>
+              </strong>
+              <small>Price (Excluding GST)</small>
+            </div>
+            <div className="home-price-figures">
               <del>{money(pricing.base)}</del>
-            </div>
-            <div>
-              <small>Your Price</small>
-              <strong>{money(pricing.total)}</strong>
-            </div>
-            <div className="home-savings">
               <span className="offer">30% OFF</span>
-              <small>
-                You Save <b>{money(pricing.saving)}</b>
-              </small>
+              <b>{money(pricing.total)}</b>
             </div>
-            <span className="gst-extra">
-              GST extra · final quote confirmed by our team
-            </span>
           </div>
           <p className="home-scope">
             {current.note} · {current.team}{' '}
@@ -341,21 +323,6 @@ export default function HomeBookingForm() {
         <p className="form-error" role="alert">
           {error}
         </p>
-      ) : null}
-      {status ? (
-        <div className="home-status" role="status" aria-live="polite">
-          {status}{' '}
-          {statusUrl ? (
-            <a
-              className="text-link"
-              href={statusUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Open WhatsApp
-            </a>
-          ) : null}
-        </div>
       ) : null}
     </form>
   );
