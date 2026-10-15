@@ -1,10 +1,10 @@
-import site from '../data/site';
+import { getCatalog } from '../catalog';
 
 export const money = (value) =>
   `₹${Math.round(value).toLocaleString('en-IN')}`;
 
 export function findAmc(rateId) {
-  return site.amc.find((item) => item.id === rateId) ?? null;
+  return getCatalog().amc.find((item) => item.id === rateId) ?? null;
 }
 
 export function calcOneTime(rate, quantity) {
@@ -13,7 +13,7 @@ export function calcOneTime(rate, quantity) {
     rate.unit === 'package'
       ? rate.base
       : Math.max(rate.minimum, qty * rate.rate);
-  const saving = Math.round(base * site.discount);
+  const saving = Math.round(base * getCatalog().discount);
   return { base, saving, total: base - saving };
 }
 
@@ -22,7 +22,7 @@ export function calcEstimate(rate, quantity, plan = 'one') {
   if (plan === 'amc' && amc) {
     return {
       base: rate.base * amc.visits,
-      saving: Math.round(rate.base * site.discount),
+      saving: Math.round(rate.base * getCatalog().discount),
       total: amc.annual,
       amc,
       scheduled: true,
@@ -44,13 +44,13 @@ export function isQuantityOutOfRange(rate, quantity) {
 }
 
 export function ratesForService(service, segment = 'Residential') {
-  return site.rates.filter(
+  return getCatalog().rates.filter(
     (rate) => rate.service === service && rate.segment === segment,
   );
 }
 
 export function findFullHomePackage(size, type) {
-  return site.rates.find(
+  return getCatalog().rates.find(
     (rate) =>
       rate.segment === 'Residential' &&
       rate.service === 'Full Home Deep Cleaning' &&

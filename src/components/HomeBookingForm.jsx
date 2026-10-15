@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import site from '../data/site';
+import { useCatalog } from '../catalog';
 import {
   calcOneTime,
   findFullHomePackage,
@@ -25,6 +25,7 @@ const TIMES = [
 
 export default function HomeBookingForm() {
   const navigate = useNavigate();
+  const site = useCatalog();
   const [services, setServices] = useState([site.services[0]]);
   const selectedServices = services.length ? services : [site.services[0]];
   const [size, setSize] = useState('1BHK');
@@ -45,7 +46,7 @@ export default function HomeBookingForm() {
     const segment =
       singleService === 'Office Deep Cleaning' ? 'Commercial' : 'Residential';
     return ratesForService(singleService, segment);
-  }, [showPackage, singleService]);
+  }, [site, showPackage, singleService]);
 
   const lineItems = useMemo(() => {
     return selectedServices
@@ -70,7 +71,7 @@ export default function HomeBookingForm() {
           : null;
       })
       .filter(Boolean);
-  }, [selectedServices, size, type, packageId, quantity]);
+  }, [site, selectedServices, size, type, packageId, quantity]);
 
   const current = lineItems.length === 1 ? lineItems[0].rate : null;
 

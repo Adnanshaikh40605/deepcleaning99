@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import PageHero from '../components/PageHero';
 import RateCard from '../components/RateCard';
-import site from '../data/site';
+import { useCatalog } from '../catalog';
 import { useDocumentMeta } from '../hooks/useDocumentMeta';
 
 export default function Prices() {
@@ -12,6 +12,7 @@ export default function Prices() {
     path: '/prices/',
   });
 
+  const site = useCatalog();
   const [segment, setSegment] = useState('Residential');
   const [service, setService] = useState('');
   const [plan, setPlan] = useState('one');
@@ -22,7 +23,7 @@ export default function Prices() {
         (rate) =>
           rate.segment === segment && (!service || rate.service === service),
       ),
-    [segment, service],
+    [site, segment, service],
   );
 
   return (

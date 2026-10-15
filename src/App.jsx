@@ -1,4 +1,6 @@
+import { useEffect } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { loadRemoteCatalog } from './catalog';
 import Layout from './components/Layout';
 import BookCleaning from './pages/BookCleaning';
 import Contact from './pages/Contact';
@@ -39,9 +41,17 @@ function ContentRoute({ path }) {
   return <ContentPage path={path} />;
 }
 
+function CatalogLoader() {
+  useEffect(() => {
+    loadRemoteCatalog();
+  }, []);
+  return null;
+}
+
 export default function App() {
   return (
     <BrowserRouter>
+      <CatalogLoader />
       <Routes>
         <Route element={<Layout />}>
           <Route index element={<Home />} />

@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import site from '../data/site';
+import { useCatalog } from '../catalog';
 import {
   calcEstimate,
   isQuantityOutOfRange,
@@ -21,6 +21,7 @@ const TIMES = [
 export default function BookingForm() {
   const navigate = useNavigate();
   const [params] = useSearchParams();
+  const site = useCatalog();
   const chosen = site.rates.find((rate) => rate.id === params.get('package'));
 
   const [segment, setSegment] = useState(
@@ -48,7 +49,7 @@ export default function BookingForm() {
       site.rates.filter(
         (rate) => rate.segment === segment && rate.service === service,
       ),
-    [segment, service],
+    [site, segment, service],
   );
 
   const current =

@@ -4,7 +4,7 @@ import PageHero from '../components/PageHero';
 import Prose from '../components/Prose';
 import RateCard from '../components/RateCard';
 import { getPage } from '../data/pages';
-import site from '../data/site';
+import { useCatalog } from '../catalog';
 import { useDocumentMeta } from '../hooks/useDocumentMeta';
 
 function crumbsFrom(text) {
@@ -22,6 +22,7 @@ function crumbsFrom(text) {
 }
 
 export default function ContentPage({ path }) {
+  const site = useCatalog();
   const page = getPage(path);
 
   useDocumentMeta({
