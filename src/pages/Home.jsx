@@ -108,54 +108,8 @@ export default function Home() {
 
   return (
     <>
-      <section className="hero-stage">
-        <div className="wrap hero-layout">
-          <div className="hero-intro">
-            <h1>
-              Deep cleaning
-              <br />
-              for your home
-              <br />
-              <em>and workplace</em>
-            </h1>
-            <p className="hero-locations">
-              Mumbai · Navi Mumbai · Thane
-              <span>Pune · Lonavala</span>
-            </p>
-            <div className="hero-benefits">
-              <div>
-                <span className="benefit-icon" aria-hidden="true">
-                  ✓
-                </span>
-                <strong>Trained cleaning teams</strong>
-              </div>
-              <div>
-                <span className="benefit-icon" aria-hidden="true">
-                  ✓
-                </span>
-                <strong>Professional equipment</strong>
-              </div>
-              <div>
-                <span className="benefit-icon" aria-hidden="true">
-                  ✓
-                </span>
-                <strong>Clear service scope</strong>
-              </div>
-            </div>
-            <div className="hero-banner">
-              {services.map((item) => (
-                <Link key={item.href} to={item.href}>
-                  <img
-                    src={item.image.replace('/services/', '/services/banner/')}
-                    alt=""
-                    width={160}
-                    height={160}
-                  />
-                  <span>{item.title.replace(' Deep Cleaning', '').replace(' Cleaning', '')}</span>
-                </Link>
-              ))}
-            </div>
-          </div>
+      <section className="book-screen">
+        <div className="wrap book-screen-inner">
           <HomeBookingForm />
         </div>
       </section>

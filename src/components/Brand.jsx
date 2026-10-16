@@ -15,7 +15,7 @@ export default function Brand({ compact = false, inverted = false }) {
         alt=""
       />
       <span className="brand__tag" aria-hidden="true">
-        By Pestcontrol99.com
+        by Pestcontrol99.com
       </span>
     </Link>
   );

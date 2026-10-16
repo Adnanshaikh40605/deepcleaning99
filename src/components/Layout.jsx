@@ -2,7 +2,6 @@ import { Outlet, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 import Header from './Header';
 import Footer from './Footer';
-import MobileBar from './MobileBar';
 
 export default function Layout() {
   const location = useLocation();
@@ -19,8 +18,10 @@ export default function Layout() {
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
   }, [location.pathname, location.hash]);
 
+  const isHome = location.pathname === '/';
+
   return (
-    <>
+    <div className={isHome ? 'home-shell' : undefined}>
       <a className="skip" href="#main">
         Skip to content
       </a>
@@ -29,7 +30,6 @@ export default function Layout() {
         <Outlet />
       </main>
       <Footer />
-      <MobileBar />
-    </>
+    </div>
   );
 }
