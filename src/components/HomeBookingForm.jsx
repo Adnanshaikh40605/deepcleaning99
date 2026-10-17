@@ -428,8 +428,6 @@ export default function HomeBookingForm() {
           </div>
         </div>
       ) : null}
-      <p className="dc-confirm-note">Final price &amp; appointment confirmed after review.</p>
-
       {error ? (
         <p className="form-error" role="alert">
           {error}

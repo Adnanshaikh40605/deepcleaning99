@@ -2679,190 +2679,53 @@ del {
 
   .home-shell .book-screen {
     display: grid;
-    grid-template-columns: minmax(0, 1.15fr) minmax(400px, 460px);
-    gap: 2.25rem;
-    align-items: start;
-    width: min(100% - 3.5rem, 1180px);
-    height: auto;
-    margin: 1.75rem auto 0.25rem;
-    padding: 0 0 0.5rem;
-    overflow: visible;
+    grid-template-columns: minmax(0, 1fr) minmax(400px, 480px);
+    gap: 1.25rem;
+    align-items: stretch;
+    width: min(100% - 3rem, 1100px);
+    height: calc(100dvh - var(--home-header));
+    margin: 0 auto;
+    padding: 0.7rem 0;
+    overflow: hidden;
     background: transparent;
   }
 
   .desk-hero-copy {
-    display: block;
-    min-width: 0;
-    padding-top: 0.35rem;
-  }
-
-  .desk-kicker {
-    margin: 0 0 0.7rem;
-    color: var(--green-dark);
-    font-size: 0.78rem;
-    font-weight: 800;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-  }
-
-  .desk-hero-title {
-    margin: 0 0 0.75rem;
-    max-width: 16ch;
-    color: var(--navy);
-    font-family: var(--font-display);
-    font-size: clamp(2.15rem, 3.1vw, 3.15rem);
-    font-weight: 800;
-    letter-spacing: -0.04em;
-    line-height: 1.05;
-  }
-
-  .desk-hero-lead {
-    max-width: 38rem;
-    margin: 0 0 1rem;
-    color: var(--muted);
-    font-size: 1.05rem;
-    line-height: 1.55;
-  }
-
-  .desk-points {
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin: 0 0 1.15rem;
-    padding: 0;
-    list-style: none;
-  }
-
-  .desk-points li {
-    padding: 0.4rem 0.7rem;
-    border: 1px solid #d5e6dc;
-    border-radius: 999px;
-    background: #fff;
-    color: var(--navy);
-    font-size: 0.84rem;
-    font-weight: 700;
+    min-width: 0;
+    min-height: 0;
   }
 
   .desk-hero-photo {
+    flex: 1;
+    min-height: 0;
     margin: 0;
   }
 
   .desk-hero-photo img {
     width: 100%;
-    height: 320px;
+    height: 100%;
     object-fit: cover;
     object-position: center 40%;
-    border-radius: 22px;
+    border-radius: 20px;
     box-shadow: 0 18px 40px rgba(8, 41, 86, 0.14);
   }
 
   .home-shell .book-screen-inner {
-    display: block;
-    position: sticky;
-    top: 92px;
+    display: flex;
     width: 100%;
-    height: auto;
+    height: 100%;
+    min-height: 0;
   }
 
   .home-shell .dc-book {
-    display: block;
-    gap: 0;
-    padding: 1.15rem 1.05rem 0.95rem;
+    min-height: 0;
+    height: 100%;
+    padding: 0.65rem 0.75rem 0.5rem;
     border: 1px solid #e3ebf3;
-    border-radius: 20px;
+    border-radius: 18px;
     background: #fff;
     box-shadow: 0 22px 50px rgba(8, 41, 86, 0.12);
-  }
-
-  .home-shell .dc-book > * {
-    flex: none;
-  }
-
-  .home-shell .dc-book h1 {
-    margin: 0 0 0.7rem;
-    font-size: 1.45rem;
-    line-height: 1.15;
-  }
-
-  .home-shell .dc-book h2 {
-    margin: 0.7rem 0 0.35rem;
-    font-size: 0.92rem;
-    line-height: 1.2;
-  }
-
-  .home-shell .dc-segment,
-  .home-shell .dc-condition,
-  .home-shell .dc-split,
-  .home-shell .dc-sizes {
-    gap: 0.45rem;
-  }
-
-  .home-shell .dc-segment button,
-  .home-shell .dc-condition button,
-  .home-shell .dc-sizes button {
-    height: auto;
-    min-height: 40px;
-    border-radius: 12px;
-    font-size: 0.88rem;
-  }
-
-  .home-shell .dc-services {
-    flex: none;
-    min-height: 0;
-    gap: 0.45rem;
-    grid-auto-rows: auto;
-  }
-
-  .home-shell .dc-services button {
-    height: auto;
-    border-radius: 12px;
-  }
-
-  .home-shell .dc-services-photo {
-    flex: none;
-    aspect-ratio: 4 / 3;
-    min-height: 72px;
-  }
-
-  .home-shell .dc-services button span:last-child {
-    padding: 0.35rem 0.15rem 0.45rem;
-    font-size: 0.75rem;
-  }
-
-  .home-shell .dc-sizes button,
-  .home-shell .dc-field {
-    height: auto;
-    min-height: 38px;
-    font-size: 0.82rem;
-  }
-
-  .home-shell .dc-field input,
-  .home-shell .dc-field select,
-  .home-shell .dc-split .dc-field input,
-  .home-shell .dc-split .dc-field select,
-  .home-shell #dc-customer input[name='phone'],
-  .home-shell .dc-code {
-    font-size: 0.88rem;
-  }
-
-  .home-shell .dc-price {
-    margin-top: 0.55rem;
-    padding: 0.55rem 0.7rem;
-  }
-
-  .home-shell .dc-price strong {
-    font-size: 0.82rem;
-  }
-
-  .home-shell .dc-price b {
-    font-size: 1.25rem;
-  }
-
-  .home-shell .dc-submit {
-    height: auto;
-    min-height: 46px;
-    margin-top: 0.45rem;
-    font-size: 1rem;
   }
 
   .desk-trust {

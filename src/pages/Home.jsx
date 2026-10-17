@@ -104,18 +104,6 @@ export default function Home() {
     <>
       <section className="book-screen">
         <div className="desk-hero-copy">
-          <p className="desk-kicker">Home and office deep cleaning</p>
-          <p className="desk-hero-title">A proper clean, with the price and the scope shown first.</p>
-          <p className="desk-hero-lead">
-            Book a full home, kitchen, bathroom, sofa, mattress, carpet or office
-            clean in Mumbai, Thane, Navi Mumbai, Pune and Lonavala. The listed
-            rate is on the form before you confirm.
-          </p>
-          <ul className="desk-points">
-            <li>Trained teams bring the equipment</li>
-            <li>Furnished and empty homes, plus offices</li>
-            <li>Visit confirmed only after we check the details</li>
-          </ul>
           <figure className="desk-hero-photo">
             <img
               src="/assets/hero-desktop.jpg"
