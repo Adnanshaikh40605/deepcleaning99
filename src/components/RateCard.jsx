@@ -15,9 +15,7 @@ export default function RateCard({ rate, plan = 'one' }) {
       {scheduled ? (
         <span className="offer">{amc.visits} VISITS / YEAR</span>
       ) : (
-        <div>
-          <del>{money(rate.base)}</del> <span className="offer">30% OFF</span>
-        </div>
+        <span className="offer">30% OFF</span>
       )}
       <strong className="big-price">{money(estimate.total)}</strong>
       <p>

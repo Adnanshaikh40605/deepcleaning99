@@ -71,11 +71,10 @@ export default function Prices() {
         <p className="fine">
           Every price card shows what it covers. Check the area cap, included
           bathrooms or items, minimum booking amount and any separately priced
-          work before confirming. Where the 30% offer applies, the booking
-          summary shows the regular service price, discount and service amount.
-          Applicable GST is extra and is confirmed before the visit. The offer
-          applies only to the eligible one-time scope and is not combined with
-          a scheduled cleaning discount. Heavy grease, renovation residue,
+          work before confirming. The 30% OFF label is promotional. The price
+          shown is the listed service rate and is not reduced. Applicable GST
+          is extra and is confirmed before the visit. The label is not combined
+          with a scheduled cleaning discount. Heavy grease, renovation residue,
           special upholstery, extra areas and access restrictions may need a
           revised quotation. We discuss additional work before adding it.
         </p>

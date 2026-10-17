@@ -9,7 +9,6 @@ const services = [
     href: '/full-home-deep-cleaning/',
     note: 'Furnished and empty flats, bungalows and villas.',
     regular: 3499,
-    price: 2449,
     image: '/assets/services/full-home.jpg',
   },
   {
@@ -17,7 +16,6 @@ const services = [
     href: '/kitchen-deep-cleaning/',
     note: 'Grease on tiles, counters, sinks and cabinets.',
     regular: 1499,
-    price: 1049,
     image: '/assets/services/kitchen.jpg',
   },
   {
@@ -25,7 +23,6 @@ const services = [
     href: '/bathroom-deep-cleaning/',
     note: 'Tiles, toilets, basins and fittings.',
     regular: 699,
-    price: 489,
     image: '/assets/services/bathroom.jpg',
   },
   {
@@ -33,7 +30,6 @@ const services = [
     href: '/sofa-cleaning/',
     note: 'Fabric sofas. Leather is cleaned separately.',
     regular: 899,
-    price: 629,
     image: '/assets/services/sofa.jpg',
   },
   {
@@ -41,7 +37,6 @@ const services = [
     href: '/mattress-cleaning/',
     note: 'Single, double and king-size mattresses.',
     regular: 699,
-    price: 489,
     image: '/assets/services/mattress.jpg',
   },
   {
@@ -49,7 +44,6 @@ const services = [
     href: '/carpet-cleaning/',
     note: 'Rugs and fitted carpets at home or office.',
     regular: 960,
-    price: 672,
     image: '/assets/services/carpet.jpg',
   },
   {
@@ -142,8 +136,7 @@ export default function Home() {
                 ) : (
                   <>
                     <div className="service-price">
-                      <del>{money(item.regular)}</del>
-                      <strong>{money(item.price)}</strong>
+                      <strong>{money(item.regular)}</strong>
                     </div>
                     <span className="offer">30% OFF</span>
                   </>
@@ -154,7 +147,7 @@ export default function Home() {
         </div>
         <div className="service-notes">
           <span>
-            30% off one-time service charges · GST extra · package caps and
+            30% OFF label on listed rates · GST extra · package caps and
             minimum charges apply.
           </span>
           <Link to="/prices/">View all rates & AMC packages</Link>

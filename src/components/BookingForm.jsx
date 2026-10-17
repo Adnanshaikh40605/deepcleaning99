@@ -8,6 +8,7 @@ import {
   todayISO,
 } from '../utils/pricing';
 import { digitsOnlyPhone, submitDeepCleaningInquiry } from '../utils/api';
+import { goToThankYou } from '../utils/thankYou';
 import { cityFromAddress } from '../utils/googleMaps';
 import AddressAutocomplete from './AddressAutocomplete';
 
@@ -129,23 +130,20 @@ export default function BookingForm() {
         regular_price: estimate.scheduled
           ? current.base * (estimate.amc?.visits || 1)
           : estimate.base,
-        discount_amount: estimate.scheduled ? 0 : estimate.saving,
+        discount_amount: 0,
         notes,
         page_url: typeof window !== 'undefined' ? window.location.href : '',
       });
 
-      navigate('/thank-you/', {
-        replace: true,
-        state: {
-          name,
-          service,
-          packageName: current.package,
-          city: formCity,
-          address,
-          preferredDate,
-          preferredTime,
-          price: estimate.total,
-        },
+      goToThankYou(navigate, {
+        name,
+        service,
+        packageName: current.package,
+        city: formCity,
+        address,
+        preferredDate,
+        preferredTime,
+        price: estimate.total,
       });
     } catch (err) {
       setError(err?.message || 'Could not submit booking request. Please try again.');
@@ -336,8 +334,8 @@ export default function BookingForm() {
             </div>
             {!estimate.scheduled ? (
               <div>
-                <dt>Launch discount · 30%</dt>
-                <dd>−{money(estimate.saving)}</dd>
+                <dt>Promotion</dt>
+                <dd>30% OFF</dd>
               </div>
             ) : null}
             <div className="total">

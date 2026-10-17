@@ -8,6 +8,7 @@ import {
   todayISO,
 } from '../utils/pricing';
 import { digitsOnlyPhone, submitDeepCleaningInquiry } from '../utils/api';
+import { goToThankYou } from '../utils/thankYou';
 import { cityFromAddress } from '../utils/googleMaps';
 import AddressAutocomplete from './AddressAutocomplete';
 
@@ -186,7 +187,6 @@ export default function HomeBookingForm() {
     [site, segment, card.service, size, type],
   );
   const pricing = rate ? calcOneTime(rate, rate.quantity) : null;
-  const discountPercent = pricing && pricing.base > 0 ? Math.round((pricing.saving / pricing.base) * 100) : 0;
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -202,13 +202,14 @@ export default function HomeBookingForm() {
       return;
     }
 
+    const matchedCity = cityFromAddress(address, site.cities) || city;
     setError(null);
     setSubmitting(true);
     try {
       await submitDeepCleaningInquiry({
         name,
         mobile: phone,
-        city,
+        city: matchedCity,
         address,
         segment,
         service: card.service,
@@ -223,22 +224,19 @@ export default function HomeBookingForm() {
         preferred_time: time,
         estimated_price: pricing.total,
         regular_price: pricing.base,
-        discount_amount: pricing.saving,
+        discount_amount: 0,
         notes: '',
         page_url: typeof window !== 'undefined' ? window.location.href : '',
       });
-      navigate('/thank-you/', {
-        replace: true,
-        state: {
-          name,
-          service: card.service,
-          packageName: rate.package,
-          city,
-          address,
-          preferredDate,
-          preferredTime: time,
-          price: pricing.total,
-        },
+      goToThankYou(navigate, {
+        name,
+        service: card.service,
+        packageName: rate.package,
+        city: matchedCity,
+        address,
+        preferredDate,
+        preferredTime: time,
+        price: pricing.total,
       });
     } catch (err) {
       setError(err?.message || 'Could not submit booking request. Please try again.');
@@ -425,8 +423,7 @@ export default function HomeBookingForm() {
             <small>Price (excl. GST)</small>
           </div>
           <div className="dc-price-meta">
-            {discountPercent > 0 ? <del>{money(pricing.base)}</del> : null}
-            {discountPercent > 0 ? <span>{discountPercent}% OFF</span> : null}
+            <span>30% OFF</span>
             <b>{money(pricing.total)}</b>
           </div>
         </div>

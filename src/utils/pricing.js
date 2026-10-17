@@ -13,8 +13,9 @@ export function calcOneTime(rate, quantity) {
     rate.unit === 'package'
       ? rate.base
       : Math.max(rate.minimum, qty * rate.rate);
-  const saving = Math.round(base * getCatalog().discount);
-  return { base, saving, total: base - saving };
+  // 30% OFF is a promotional label on the website. The amount shown and
+  // submitted stays the CRM master rate.
+  return { base, saving: 0, total: base };
 }
 
 export function calcEstimate(rate, quantity, plan = 'one') {
@@ -22,7 +23,7 @@ export function calcEstimate(rate, quantity, plan = 'one') {
   if (plan === 'amc' && amc) {
     return {
       base: rate.base * amc.visits,
-      saving: Math.round(rate.base * getCatalog().discount),
+      saving: 0,
       total: amc.annual,
       amc,
       scheduled: true,
