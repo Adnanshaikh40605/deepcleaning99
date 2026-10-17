@@ -103,8 +103,51 @@ export default function Home() {
   return (
     <>
       <section className="book-screen">
+        <div className="desk-hero-copy">
+          <p className="desk-kicker">Home and office deep cleaning</p>
+          <p className="desk-hero-title">A proper clean, with the price and the scope shown first.</p>
+          <p className="desk-hero-lead">
+            Book a full home, kitchen, bathroom, sofa, mattress, carpet or office
+            clean in Mumbai, Thane, Navi Mumbai, Pune and Lonavala. The listed
+            rate is on the form before you confirm.
+          </p>
+          <ul className="desk-points">
+            <li>Trained teams bring the equipment</li>
+            <li>Furnished and empty homes, plus offices</li>
+            <li>Visit confirmed only after we check the details</li>
+          </ul>
+          <figure className="desk-hero-photo">
+            <img
+              src="/assets/hero-desktop.jpg"
+              alt="Cleaning team working through a living room, kitchen and bathroom"
+              width={960}
+              height={640}
+            />
+          </figure>
+        </div>
         <div className="wrap book-screen-inner">
           <HomeBookingForm />
+        </div>
+      </section>
+
+      <section className="desk-trust" aria-label="What is included">
+        <div className="wrap desk-trust-grid">
+          <article>
+            <strong>Five cities</strong>
+            <span>Mumbai, Thane, Navi Mumbai, Pune and Lonavala.</span>
+          </article>
+          <article>
+            <strong>Clear scope</strong>
+            <span>What is included, and what is extra, before the team arrives.</span>
+          </article>
+          <article>
+            <strong>Listed rates</strong>
+            <span>30% OFF is a label on the rate. GST is extra.</span>
+          </article>
+          <article>
+            <strong>Same group</strong>
+            <span>Deepcleaning99 is part of Pestcontrol99.com.</span>
+          </article>
         </div>
       </section>
 
@@ -196,6 +239,22 @@ export default function Home() {
               Request a Site Survey
             </Link>
           </aside>
+        </div>
+      </section>
+
+      <section className="desk-cities">
+        <div className="wrap desk-cities-inner">
+          <div>
+            <h2>Book in the city where the property is</h2>
+            <p>The same booking form covers these service areas. Tell us the full address so the team is scheduled for the right city.</p>
+          </div>
+          <div className="desk-city-row">
+            <Link to="/deep-cleaning-mumbai/">Mumbai</Link>
+            <Link to="/deep-cleaning-thane/">Thane</Link>
+            <Link to="/deep-cleaning-navi-mumbai/">Navi Mumbai</Link>
+            <Link to="/deep-cleaning-pune/">Pune</Link>
+            <Link to="/deep-cleaning-lonavala/">Lonavala</Link>
+          </div>
         </div>
       </section>
 

@@ -2657,6 +2657,348 @@ del {
   }
 }
 
+/* Desktop homepage. Hidden below 1024px so the mobile booking screen stays as it is. */
+.desk-hero-copy,
+.desk-trust,
+.desk-cities {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .home-shell {
+    --home-header: 76px;
+    background:
+      radial-gradient(900px 420px at 8% -10%, rgba(0, 151, 70, 0.08), transparent 60%),
+      linear-gradient(180deg, #f3f8fc 0%, #ffffff 280px);
+  }
+
+  .home-shell .site-header .nav {
+    height: auto;
+    min-height: var(--home-header);
+  }
+
+  .home-shell .book-screen {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(400px, 460px);
+    gap: 2.25rem;
+    align-items: start;
+    width: min(100% - 3.5rem, 1180px);
+    height: auto;
+    margin: 1.75rem auto 0.25rem;
+    padding: 0 0 0.5rem;
+    overflow: visible;
+    background: transparent;
+  }
+
+  .desk-hero-copy {
+    display: block;
+    min-width: 0;
+    padding-top: 0.35rem;
+  }
+
+  .desk-kicker {
+    margin: 0 0 0.7rem;
+    color: var(--green-dark);
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .desk-hero-title {
+    margin: 0 0 0.75rem;
+    max-width: 16ch;
+    color: var(--navy);
+    font-family: var(--font-display);
+    font-size: clamp(2.15rem, 3.1vw, 3.15rem);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 1.05;
+  }
+
+  .desk-hero-lead {
+    max-width: 38rem;
+    margin: 0 0 1rem;
+    color: var(--muted);
+    font-size: 1.05rem;
+    line-height: 1.55;
+  }
+
+  .desk-points {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0 0 1.15rem;
+    padding: 0;
+    list-style: none;
+  }
+
+  .desk-points li {
+    padding: 0.4rem 0.7rem;
+    border: 1px solid #d5e6dc;
+    border-radius: 999px;
+    background: #fff;
+    color: var(--navy);
+    font-size: 0.84rem;
+    font-weight: 700;
+  }
+
+  .desk-hero-photo {
+    margin: 0;
+  }
+
+  .desk-hero-photo img {
+    width: 100%;
+    height: 320px;
+    object-fit: cover;
+    object-position: center 40%;
+    border-radius: 22px;
+    box-shadow: 0 18px 40px rgba(8, 41, 86, 0.14);
+  }
+
+  .home-shell .book-screen-inner {
+    display: block;
+    position: sticky;
+    top: 92px;
+    width: 100%;
+    height: auto;
+  }
+
+  .home-shell .dc-book {
+    display: block;
+    gap: 0;
+    padding: 1.15rem 1.05rem 0.95rem;
+    border: 1px solid #e3ebf3;
+    border-radius: 20px;
+    background: #fff;
+    box-shadow: 0 22px 50px rgba(8, 41, 86, 0.12);
+  }
+
+  .home-shell .dc-book > * {
+    flex: none;
+  }
+
+  .home-shell .dc-book h1 {
+    margin: 0 0 0.7rem;
+    font-size: 1.45rem;
+    line-height: 1.15;
+  }
+
+  .home-shell .dc-book h2 {
+    margin: 0.7rem 0 0.35rem;
+    font-size: 0.92rem;
+    line-height: 1.2;
+  }
+
+  .home-shell .dc-segment,
+  .home-shell .dc-condition,
+  .home-shell .dc-split,
+  .home-shell .dc-sizes {
+    gap: 0.45rem;
+  }
+
+  .home-shell .dc-segment button,
+  .home-shell .dc-condition button,
+  .home-shell .dc-sizes button {
+    height: auto;
+    min-height: 40px;
+    border-radius: 12px;
+    font-size: 0.88rem;
+  }
+
+  .home-shell .dc-services {
+    flex: none;
+    min-height: 0;
+    gap: 0.45rem;
+    grid-auto-rows: auto;
+  }
+
+  .home-shell .dc-services button {
+    height: auto;
+    border-radius: 12px;
+  }
+
+  .home-shell .dc-services-photo {
+    flex: none;
+    aspect-ratio: 4 / 3;
+    min-height: 72px;
+  }
+
+  .home-shell .dc-services button span:last-child {
+    padding: 0.35rem 0.15rem 0.45rem;
+    font-size: 0.75rem;
+  }
+
+  .home-shell .dc-sizes button,
+  .home-shell .dc-field {
+    height: auto;
+    min-height: 38px;
+    font-size: 0.82rem;
+  }
+
+  .home-shell .dc-field input,
+  .home-shell .dc-field select,
+  .home-shell .dc-split .dc-field input,
+  .home-shell .dc-split .dc-field select,
+  .home-shell #dc-customer input[name='phone'],
+  .home-shell .dc-code {
+    font-size: 0.88rem;
+  }
+
+  .home-shell .dc-price {
+    margin-top: 0.55rem;
+    padding: 0.55rem 0.7rem;
+  }
+
+  .home-shell .dc-price strong {
+    font-size: 0.82rem;
+  }
+
+  .home-shell .dc-price b {
+    font-size: 1.25rem;
+  }
+
+  .home-shell .dc-submit {
+    height: auto;
+    min-height: 46px;
+    margin-top: 0.45rem;
+    font-size: 1rem;
+  }
+
+  .desk-trust {
+    display: block;
+    margin: 0.5rem 0 0.25rem;
+  }
+
+  .desk-trust-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.85rem;
+  }
+
+  .desk-trust-grid article {
+    padding: 1rem 1rem 0.9rem;
+    border: 1px solid #e4edf4;
+    border-radius: 16px;
+    background: #fff;
+  }
+
+  .desk-trust-grid strong {
+    display: block;
+    margin-bottom: 0.25rem;
+    color: var(--navy);
+    font-size: 1rem;
+  }
+
+  .desk-trust-grid span {
+    color: var(--muted);
+    font-size: 0.86rem;
+    line-height: 1.4;
+  }
+
+  .home-shell .services-section,
+  .home-shell .how-section,
+  .home-shell .section {
+    padding-top: 2.75rem;
+    padding-bottom: 2.25rem;
+  }
+
+  .home-shell .section-intro {
+    max-width: 44rem;
+  }
+
+  .home-shell .section-intro h2,
+  .home-shell .how-section h2 {
+    font-size: 2rem;
+  }
+
+  .home-shell .service-grid {
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+
+  .home-shell .service-card {
+    border-radius: 18px;
+  }
+
+  .home-shell .service-photo {
+    height: 168px;
+    aspect-ratio: auto;
+  }
+
+  .desk-cities {
+    display: block;
+    padding: 0 0 2.5rem;
+  }
+
+  .desk-cities-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    padding: 1.35rem 1.5rem;
+    border-radius: 20px;
+    background: var(--navy);
+  }
+
+  .desk-cities h2 {
+    margin: 0 0 0.35rem;
+    color: #fff;
+    font-size: 1.45rem;
+  }
+
+  .desk-cities p {
+    margin: 0;
+    max-width: 28rem;
+    color: #d7e4f2;
+  }
+
+  .desk-city-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 0.5rem;
+  }
+
+  .desk-city-row a {
+    padding: 0.55rem 0.8rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    font-weight: 750;
+  }
+
+  .desk-city-row a:hover {
+    background: #fff;
+    color: var(--navy);
+  }
+
+  .page-hero {
+    padding: 2.75rem 0 2.25rem;
+    background:
+      linear-gradient(100deg, rgba(8, 41, 86, 0.88), rgba(8, 41, 86, 0.45)),
+      url('/assets/hero-desktop.jpg') center 30% / cover no-repeat;
+  }
+
+  .page-hero h1,
+  .page-hero .eyebrow,
+  .page-hero .breadcrumbs,
+  .page-hero .breadcrumbs a {
+    color: #fff;
+  }
+
+  .page-hero p {
+    color: #e4eef6;
+    font-size: 1.05rem;
+  }
+
+  .page-hero .button {
+    background: #fff;
+    border-color: #fff;
+    color: var(--navy);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
