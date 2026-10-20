@@ -7,7 +7,8 @@ import {
   money,
   todayISO,
 } from '../utils/pricing';
-import { digitsOnlyPhone, submitDeepCleaningInquiry } from '../utils/api';
+import { digitsOnlyPhone, isValidBookingMobile } from '../utils/api';
+import { useDeepCleaningSilentLead } from '../utils/useSilentLead';
 import { goToThankYou } from '../utils/thankYou';
 import { cityFromAddress } from '../utils/googleMaps';
 import AddressAutocomplete from './AddressAutocomplete';
@@ -180,6 +181,10 @@ export default function HomeBookingForm() {
   const [includedOpen, setIncludedOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
+  const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [address, setAddress] = useState('');
+  const [date, setDate] = useState('');
 
   const card = [...CARDS, OFFICE_CARD].find((item) => item.key === serviceKey) || CARDS[0];
   const rate = useMemo(
@@ -187,47 +192,61 @@ export default function HomeBookingForm() {
     [site, segment, card.service, size, type],
   );
   const pricing = rate ? calcOneTime(rate, rate.quantity) : null;
+  const matchedCity = cityFromAddress(address, site.cities) || city;
+  const leadSnapshot = useMemo(
+    () => ({
+      name: name.trim(),
+      mobile: phone,
+      city: matchedCity,
+      address: address.trim(),
+      segment,
+      service: card.service,
+      package_name: rate?.package || '',
+      package_id: rate?.id || '',
+      quantity: rate ? String(rate.quantity) : '',
+      unit: rate?.unit || '',
+      plan: 'one',
+      property_size: size,
+      property_type: type,
+      preferred_date: date,
+      preferred_time: time,
+      estimated_price: pricing?.total ?? null,
+      regular_price: pricing?.base ?? null,
+      discount_amount: 0,
+      notes: '',
+      page_url: typeof window !== 'undefined' ? window.location.href : '',
+    }),
+    [
+      name,
+      phone,
+      matchedCity,
+      address,
+      segment,
+      card.service,
+      rate,
+      size,
+      type,
+      date,
+      time,
+      pricing,
+    ],
+  );
+  const { flush } = useDeepCleaningSilentLead(leadSnapshot);
 
   async function handleSubmit(event) {
     event.preventDefault();
     if (!rate || !pricing || submitting) return;
-    const form = new FormData(event.currentTarget);
-    const phone = digitsOnlyPhone(form.get('phone'));
-    const name = String(form.get('name') || '').trim();
-    const address = String(form.get('address') || '').trim();
-    const preferredDate = String(form.get('date') || '').trim();
+    const preferredDate = date.trim();
 
-    if (name.length < 2 || !/^[6-9]\d{9}$/.test(phone) || address.length < 5 || !preferredDate) {
+    if (name.trim().length < 2 || !isValidBookingMobile(phone) || address.trim().length < 5 || !preferredDate) {
       setError('Enter your full address, date, name and a 10-digit mobile number.');
       return;
     }
 
-    const matchedCity = cityFromAddress(address, site.cities) || city;
     setError(null);
     setSubmitting(true);
     try {
-      await submitDeepCleaningInquiry({
-        name,
-        mobile: phone,
-        city: matchedCity,
-        address,
-        segment,
-        service: card.service,
-        package_name: rate.package,
-        package_id: rate.id,
-        quantity: String(rate.quantity),
-        unit: rate.unit || '',
-        plan: 'one',
-        property_size: size,
-        property_type: type,
-        preferred_date: preferredDate,
-        preferred_time: time,
-        estimated_price: pricing.total,
-        regular_price: pricing.base,
-        discount_amount: 0,
-        notes: '',
-        page_url: typeof window !== 'undefined' ? window.location.href : '',
-      });
+      await flush();
       goToThankYou(navigate, {
         name,
         service: card.service,
@@ -360,8 +379,13 @@ export default function HomeBookingForm() {
           placeholder="Area, building & full address"
           required
           maxLength={300}
-          onSelect={(address) => {
-            const match = cityFromAddress(address, site.cities);
+          onChange={(value) => {
+            setAddress(value);
+            const match = cityFromAddress(value, site.cities);
+            if (match) setCity(match);
+          }}
+          onSelect={(value) => {
+            const match = cityFromAddress(value, site.cities);
             if (match) setCity(match);
           }}
         />
@@ -372,7 +396,14 @@ export default function HomeBookingForm() {
           <h2>Date</h2>
           <label className="dc-field">
             <Icon name="calendar" />
-            <input name="date" type="date" min={todayISO()} required />
+            <input
+              name="date"
+              type="date"
+              min={todayISO()}
+              required
+              value={date}
+              onChange={(event) => setDate(event.target.value)}
+            />
           </label>
         </div>
         <div>
@@ -393,7 +424,15 @@ export default function HomeBookingForm() {
           <h2>Name</h2>
           <label className="dc-field">
             <Icon name="user" />
-            <input name="name" placeholder="Full name" autoComplete="name" maxLength={100} required />
+            <input
+              name="name"
+              placeholder="Full name"
+              autoComplete="name"
+              maxLength={100}
+              required
+              value={name}
+              onChange={(event) => setName(event.target.value)}
+            />
           </label>
         </div>
         <div>
@@ -409,6 +448,8 @@ export default function HomeBookingForm() {
               autoComplete="tel"
               maxLength={14}
               required
+              value={phone}
+              onChange={(event) => setPhone(digitsOnlyPhone(event.target.value).slice(0, 10))}
             />
           </label>
         </div>

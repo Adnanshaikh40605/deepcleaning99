@@ -15,6 +15,7 @@ export default function AddressAutocomplete({
   required = false,
   maxLength = 300,
   onSelect,
+  onChange,
 }) {
   const [value, setValue] = useState('');
   const [suggestions, setSuggestions] = useState([]);
@@ -76,6 +77,7 @@ export default function AddressAutocomplete({
   function handleChange(event) {
     const next = event.target.value;
     setValue(next);
+    onChange?.(next);
     setOpen(true);
     setActive(-1);
     window.clearTimeout(timerRef.current);
@@ -84,6 +86,7 @@ export default function AddressAutocomplete({
 
   function choose(prediction) {
     setValue(prediction.description);
+    onChange?.(prediction.description);
     setSuggestions([]);
     setOpen(false);
     setActive(-1);

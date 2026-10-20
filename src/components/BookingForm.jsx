@@ -7,7 +7,8 @@ import {
   money,
   todayISO,
 } from '../utils/pricing';
-import { digitsOnlyPhone, submitDeepCleaningInquiry } from '../utils/api';
+import { digitsOnlyPhone, isValidBookingMobile } from '../utils/api';
+import { useDeepCleaningSilentLead } from '../utils/useSilentLead';
 import { goToThankYou } from '../utils/thankYou';
 import { cityFromAddress } from '../utils/googleMaps';
 import AddressAutocomplete from './AddressAutocomplete';
@@ -44,6 +45,12 @@ export default function BookingForm() {
   );
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
+  const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [address, setAddress] = useState('');
+  const [date, setDate] = useState('');
+  const [time, setTime] = useState(TIMES[0]);
+  const [notes, setNotes] = useState('');
 
   const matching = useMemo(
     () =>
@@ -66,6 +73,49 @@ export default function BookingForm() {
     ? isQuantityOutOfRange(current, activeQuantity) ||
       (plan === 'amc' && Number(activeQuantity) !== current.quantity)
     : false;
+  const matchedCity = cityFromAddress(address, site.cities) || city;
+  const leadSnapshot = useMemo(
+    () => ({
+      name: name.trim(),
+      mobile: phone,
+      city: matchedCity,
+      address: address.trim(),
+      segment,
+      service,
+      package_name: current?.package || '',
+      package_id: current?.id || '',
+      quantity: String(activeQuantity),
+      unit: current?.unit || '',
+      plan: plan === 'amc' ? 'amc' : 'one',
+      preferred_date: date,
+      preferred_time: time,
+      estimated_price: estimate?.total ?? null,
+      regular_price: estimate
+        ? estimate.scheduled
+          ? current.base * (estimate.amc?.visits || 1)
+          : estimate.base
+        : null,
+      discount_amount: 0,
+      notes: notes.trim(),
+      page_url: typeof window !== 'undefined' ? window.location.href : '',
+    }),
+    [
+      name,
+      phone,
+      matchedCity,
+      address,
+      segment,
+      service,
+      current,
+      activeQuantity,
+      plan,
+      date,
+      time,
+      estimate,
+      notes,
+    ],
+  );
+  const { flush } = useDeepCleaningSilentLead(leadSnapshot);
 
   function selectFirstPackage(nextMatching) {
     const first = nextMatching[0];
@@ -99,50 +149,25 @@ export default function BookingForm() {
   async function handleSubmit(event) {
     event.preventDefault();
     if (!current || !estimate || rangeInvalid || submitting) return;
-    const form = new FormData(event.currentTarget);
-    const name = String(form.get('name') || '').trim();
-    const phone = digitsOnlyPhone(form.get('phone'));
-    const formCity = city;
-    const address = String(form.get('address') || '').trim();
-    const preferredDate = String(form.get('date') || '').trim();
-    const preferredTime = String(form.get('time') || '').trim();
-    const notes = String(form.get('notes') || '').trim();
+    if (name.trim().length < 2 || !isValidBookingMobile(phone) || address.trim().length < 5 || !date) {
+      setError('Enter your full address, date, name and a 10-digit mobile number.');
+      return;
+    }
 
     setError(null);
     setSubmitting(true);
 
     try {
-      await submitDeepCleaningInquiry({
-        name,
-        mobile: phone,
-        city: formCity,
-        address,
-        segment,
-        service,
-        package_name: current.package,
-        package_id: current.id || '',
-        quantity: String(activeQuantity),
-        unit: current.unit || '',
-        plan: plan === 'amc' ? 'amc' : 'one',
-        preferred_date: preferredDate,
-        preferred_time: preferredTime,
-        estimated_price: estimate.total,
-        regular_price: estimate.scheduled
-          ? current.base * (estimate.amc?.visits || 1)
-          : estimate.base,
-        discount_amount: 0,
-        notes,
-        page_url: typeof window !== 'undefined' ? window.location.href : '',
-      });
+      await flush();
 
       goToThankYou(navigate, {
-        name,
+        name: name.trim(),
         service,
         packageName: current.package,
-        city: formCity,
-        address,
-        preferredDate,
-        preferredTime,
+        city: matchedCity,
+        address: address.trim(),
+        preferredDate: date,
+        preferredTime: time,
         price: estimate.total,
       });
     } catch (err) {
@@ -242,7 +267,14 @@ export default function BookingForm() {
         <div className="form-grid">
           <label>
             Full name
-            <input name="name" autoComplete="name" required maxLength={100} />
+            <input
+              name="name"
+              autoComplete="name"
+              required
+              maxLength={100}
+              value={name}
+              onChange={(event) => setName(event.target.value)}
+            />
           </label>
           <label>
             Mobile number
@@ -254,6 +286,8 @@ export default function BookingForm() {
               pattern="(?:\+91[ -]?)?[6-9][0-9]{9}"
               placeholder="10-digit Indian mobile"
               required
+              value={phone}
+              onChange={(event) => setPhone(digitsOnlyPhone(event.target.value).slice(0, 10))}
             />
           </label>
           <label className="wide">
@@ -263,19 +297,31 @@ export default function BookingForm() {
               placeholder="Start typing your address"
               required
               maxLength={300}
-              onSelect={(address) => {
-                const match = cityFromAddress(address, site.cities);
+              onChange={(value) => {
+                setAddress(value);
+                const match = cityFromAddress(value, site.cities);
+                if (match) setCity(match);
+              }}
+              onSelect={(value) => {
+                const match = cityFromAddress(value, site.cities);
                 if (match) setCity(match);
               }}
             />
           </label>
           <label>
             Date
-            <input name="date" type="date" min={todayISO()} required />
+            <input
+              name="date"
+              type="date"
+              min={todayISO()}
+              required
+              value={date}
+              onChange={(event) => setDate(event.target.value)}
+            />
           </label>
           <label>
             Time
-            <select name="time" defaultValue={TIMES[0]}>
+            <select name="time" value={time} onChange={(event) => setTime(event.target.value)}>
               {TIMES.map((item) => (
                 <option key={item}>{item}</option>
               ))}
@@ -288,6 +334,8 @@ export default function BookingForm() {
               rows={3}
               maxLength={600}
               placeholder="Material, stains, extra areas or access instructions"
+              value={notes}
+              onChange={(event) => setNotes(event.target.value)}
             />
           </label>
         </div>

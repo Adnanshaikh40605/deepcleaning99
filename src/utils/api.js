@@ -9,18 +9,17 @@ export function apiBaseUrl() {
   return 'http://localhost:8000/api';
 }
 
-/**
- * Submit a DeepCleaning99 booking request → CRM DeepCleaning99 Inquiries.
- * POST /api/deepcleaning-inquiries/
- */
-export async function submitDeepCleaningInquiry(payload) {
-  const url = `${apiBaseUrl()}/deepcleaning-inquiries/`;
+async function postInquiry(url, payload, signal) {
   const controller =
     typeof AbortController !== 'undefined' ? new AbortController() : null;
   const timer =
     controller && typeof window !== 'undefined'
       ? window.setTimeout(() => controller.abort(), 15000)
       : null;
+  if (signal && controller) {
+    if (signal.aborted) controller.abort();
+    else signal.addEventListener('abort', () => controller.abort(), { once: true });
+  }
 
   try {
     const response = await fetch(url, {
@@ -66,9 +65,34 @@ export async function submitDeepCleaningInquiry(payload) {
   }
 }
 
+/**
+ * Submit a DeepCleaning99 booking request → CRM DeepCleaning99 Inquiries.
+ * POST /api/deepcleaning-inquiries/
+ */
+export async function submitDeepCleaningInquiry(payload) {
+  return postInquiry(`${apiBaseUrl()}/deepcleaning-inquiries/`, payload);
+}
+
+/**
+ * Create or update one lead for this browser session.
+ * Silent calls swallow errors so typing a number never blocks the form.
+ */
+export async function upsertDeepCleaningInquiry(payload, { silent = false, signal } = {}) {
+  try {
+    return await postInquiry(`${apiBaseUrl()}/deepcleaning-inquiries/upsert/`, payload, signal);
+  } catch (err) {
+    if (silent || err?.name === 'AbortError') return { ok: false };
+    throw err;
+  }
+}
+
 export function digitsOnlyPhone(value) {
   let digits = String(value || '').replace(/\D/g, '');
   if (digits.length === 12 && digits.startsWith('91')) digits = digits.slice(2);
   if (digits.length === 11 && digits.startsWith('0')) digits = digits.slice(1);
   return digits;
+}
+
+export function isValidBookingMobile(phone) {
+  return /^[6-9]\d{9}$/.test(digitsOnlyPhone(phone));
 }
