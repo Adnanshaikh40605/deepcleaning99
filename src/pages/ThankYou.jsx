@@ -88,6 +88,12 @@ export default function ThankYou() {
         </p>
       )}
 
+      <p className="thanks-note">
+        Please review the{' '}
+        <Link to="/booking-terms/">customer terms and conditions</Link> before the
+        visit. We confirm the service details with you before the team starts work.
+      </p>
+
       <div className="thanks-actions">
         <a className="button" href={`tel:+91${site.phone}`}>
           Call {site.phone}

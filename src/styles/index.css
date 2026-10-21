@@ -389,6 +389,14 @@ small,
   line-height: 1.55;
 }
 
+.fine a,
+.thanks-note a {
+  color: var(--green);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 .offer {
   font-size: 0.7rem;
   background: #d8f5e5;
@@ -1220,9 +1228,19 @@ small,
   margin-top: 0;
 }
 
-.prose p {
+.prose p,
+.prose li {
   line-height: 1.75;
   color: #445b70;
+}
+
+.prose ul {
+  margin: 0 0 0.9rem;
+  padding-left: 1.2rem;
+}
+
+.prose li + li {
+  margin-top: 0.25rem;
 }
 
 .prose a {

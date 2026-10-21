@@ -21,7 +21,7 @@ const areas = [
 ];
 
 const secondary = [
-  { to: '/booking-terms/', label: 'Booking terms' },
+  { to: '/booking-terms/', label: 'Terms and conditions' },
   { to: '/privacy-notice/', label: 'Privacy notice' },
   { to: '/service-quality/', label: 'Service quality' },
   { to: '/faqs/', label: 'FAQs' },

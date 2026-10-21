@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useCatalog } from '../catalog';
 import {
   calcEstimate,
@@ -349,7 +349,8 @@ export default function BookingForm() {
         </button>
         <p className="fine">
           Confirm Booking saves your request to our team. An appointment is
-          confirmed only after we verify the scope, final price and slot.
+          confirmed only after we verify the scope, final price and slot.{' '}
+          <Link to="/booking-terms/">Read the customer terms and conditions</Link>.
         </p>
         {rangeInvalid ? (
           <p className="form-error" role="alert">
