@@ -2122,7 +2122,7 @@ del {
 
 .dc-sizes {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(7, minmax(0, 1fr));
   gap: 0.35rem;
 }
 
@@ -2548,7 +2548,7 @@ del {
   min-height: 0;
   height: clamp(26px, 3.6dvh, 34px);
   border-radius: 8px;
-  font-size: 0.68rem;
+  font-size: 0.62rem;
 }
 
 .home-shell .dc-field {

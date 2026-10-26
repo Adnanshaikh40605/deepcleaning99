@@ -13,7 +13,8 @@ import { goToThankYou } from '../utils/thankYou';
 import { cityFromAddress } from '../utils/googleMaps';
 import AddressAutocomplete from './AddressAutocomplete';
 
-const SIZES = ['1RK', '1BHK', '2BHK', '3BHK', '4BHK'];
+const SIZES = ['Chawl', '1RK', '1BHK', '2BHK', '3BHK', '4BHK', '5BHK'];
+const TIERS = ['Standard', 'Premium'];
 const TIMES = ['9 AM – 12 PM', '12 PM – 4 PM', '4 PM – 8 PM', 'Discuss another time'];
 
 const CARDS = [
@@ -32,26 +33,38 @@ const OFFICE_CARD = {
   image: '/assets/services/banner/office.jpg',
 };
 
-function sizeIndex(size) {
-  return Math.max(0, SIZES.indexOf(size));
-}
-
-function chooseRate(catalog, segment, service, size, type) {
+function chooseRate(catalog, segment, service, size, type, tier) {
   const residential = segment !== 'Commercial';
   const pool = catalog.rates.filter(
     (rate) => rate.service === service && rate.segment === (residential ? 'Residential' : 'Commercial'),
   );
   const fallback = pool[0] || catalog.rates.find((rate) => rate.service === service) || null;
-  const big = sizeIndex(size) >= 3;
-  const mid = sizeIndex(size) === 2;
+  const big = ['3BHK', '4BHK', '5BHK'].includes(size);
+  const mid = size === '2BHK';
   const id = residential
     ? {
         'Full Home Deep Cleaning': null,
-        'Kitchen Deep Cleaning': big ? 'R14' : type === 'Empty' ? 'R12' : 'R13',
-        'Bathroom Deep Cleaning': big ? 'R17' : mid ? 'R16' : 'R15',
-        'Sofa Cleaning': big ? 'R21' : mid ? 'R20' : 'R19',
-        'Mattress Cleaning': size === '1RK' ? 'R24' : big ? 'R26' : 'R25',
-        'Carpet Cleaning': sizeIndex(size) <= 1 ? 'R27' : 'R28',
+        'Kitchen Deep Cleaning': type === 'Empty' ? 'K01' : 'K03',
+        'Bathroom Deep Cleaning': ['Chawl', '1RK', '1BHK'].includes(size) ? 'A01' : size === '2BHK' ? 'A02' : 'A03',
+        'Sofa Cleaning': {
+          Chawl: 'W03',
+          '1RK': 'W03',
+          '1BHK': 'W03',
+          '2BHK': 'W05',
+          '3BHK': 'W07',
+          '4BHK': 'W10',
+          '5BHK': 'W10',
+        }[size],
+        'Mattress Cleaning': {
+          Chawl: 'A13',
+          '1RK': 'A13',
+          '1BHK': 'A14',
+          '2BHK': 'A14',
+          '3BHK': 'A15',
+          '4BHK': 'A15',
+          '5BHK': 'A15',
+        }[size],
+        'Carpet Cleaning': 'A16',
         'Office Deep Cleaning': 'R29',
       }[service]
     : {
@@ -61,11 +74,19 @@ function chooseRate(catalog, segment, service, size, type) {
         'Sofa Cleaning': 'C7',
         'Mattress Cleaning': big || mid ? 'C10' : 'C9',
         'Carpet Cleaning': big ? 'C13' : mid ? 'C12' : 'C11',
-        'Office Deep Cleaning': ['C14', 'C14', 'C15', 'C16', 'C17'][sizeIndex(size)],
+        'Office Deep Cleaning': {
+          Chawl: 'C14',
+          '1RK': 'C14',
+          '1BHK': 'C14',
+          '2BHK': 'C15',
+          '3BHK': 'C16',
+          '4BHK': 'C17',
+          '5BHK': 'C17',
+        }[size],
       }[service];
 
   if (residential && service === 'Full Home Deep Cleaning') {
-    return findFullHomePackage(size, type) || fallback;
+    return findFullHomePackage(size, type, tier) || fallback;
   }
   return (id && catalog.rates.find((rate) => rate.id === id)) || fallback;
 }
@@ -176,6 +197,7 @@ export default function HomeBookingForm() {
   const [showOffice, setShowOffice] = useState(false);
   const [size, setSize] = useState('1BHK');
   const [type, setType] = useState('Furnished');
+  const [tier, setTier] = useState('Standard');
   const [time, setTime] = useState(TIMES[0]);
   const [city, setCity] = useState(site.cities[0]);
   const [includedOpen, setIncludedOpen] = useState(false);
@@ -187,9 +209,10 @@ export default function HomeBookingForm() {
   const [date, setDate] = useState('');
 
   const card = [...CARDS, OFFICE_CARD].find((item) => item.key === serviceKey) || CARDS[0];
+  const showHomeTier = segment !== 'Commercial' && card.service === 'Full Home Deep Cleaning';
   const rate = useMemo(
-    () => chooseRate(site, segment, card.service, size, type),
-    [site, segment, card.service, size, type],
+    () => chooseRate(site, segment, card.service, size, type, tier),
+    [site, segment, card.service, size, type, tier],
   );
   const pricing = rate ? calcOneTime(rate, rate.quantity) : null;
   const matchedCity = cityFromAddress(address, site.cities) || city;
@@ -344,6 +367,27 @@ export default function HomeBookingForm() {
         ))}
       </div>
 
+      {showHomeTier ? (
+        <>
+          <div className="dc-label-row">
+            <h2>Package</h2>
+          </div>
+          <div className="dc-condition" role="group" aria-label="Package">
+            {TIERS.map((item) => (
+              <button
+                key={item}
+                type="button"
+                className={tier === item ? 'is-on' : undefined}
+                aria-pressed={tier === item}
+                onClick={() => setTier(item)}
+              >
+                {item}
+              </button>
+            ))}
+          </div>
+        </>
+      ) : null}
+
       <div className="dc-label-row">
         <h2>Property condition</h2>
         <button type="button" className="dc-info" onClick={() => setIncludedOpen(true)}>
@@ -459,7 +503,7 @@ export default function HomeBookingForm() {
         <div className="dc-price">
           <div>
             <strong>
-              {size} • {type}
+              {showHomeTier ? `${size} • ${type} • ${tier}` : rate.package}
             </strong>
             <small>Price (excl. GST)</small>
           </div>

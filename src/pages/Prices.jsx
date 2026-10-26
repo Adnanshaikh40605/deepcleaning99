@@ -31,7 +31,7 @@ export default function Prices() {
       <PageHero
         eyebrow="RATES & PACKAGES"
         title="Cleaning prices with the scope clearly shown"
-        description="We price full-home cleaning by the agreed property size and condition. Sofas are usually quoted by seat count, mattresses by size and quantity, and carpets by measured area. Commercial cleaning needs a scope-based quotation."
+        description="Full-home cleaning is priced by property size, furnished or empty, and Standard or Premium. Sofas are quoted as a complete seat bundle, mattresses by size, and carpets by measured area. Commercial cleaning needs a scope-based quotation."
       />
       <section className="section wrap">
         <div className="price-filters">

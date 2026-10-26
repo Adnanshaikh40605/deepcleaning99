@@ -1,6 +1,21 @@
 import { Link } from 'react-router-dom';
 import { calcEstimate, findAmc, money } from '../utils/pricing';
 
+function effortLine(rate) {
+  const unit =
+    rate.quantity > 1 && !rate.unit.endsWith('ft') && rate.unit !== 'package'
+      ? `${rate.unit}s`
+      : rate.unit;
+  const parts = [`${rate.quantity} ${unit}`];
+  if (rate.team) {
+    parts.push(`${rate.team} ${rate.team > 1 ? 'technicians' : 'technician'}`);
+  }
+  if (rate.hours) {
+    parts.push(/day/i.test(rate.hours) ? rate.hours : `${rate.hours} hours`);
+  }
+  return parts.join(' · ');
+}
+
 export default function RateCard({ rate, plan = 'one' }) {
   const amc = findAmc(rate.id);
   const scheduled = plan === 'amc';
@@ -21,7 +36,7 @@ export default function RateCard({ rate, plan = 'one' }) {
       <p>
         {scheduled
           ? `${money(amc.perVisit)} per visit · ${amc.interval}`
-          : `${rate.quantity} ${rate.unit}${rate.quantity > 1 && !rate.unit.endsWith('ft') && rate.unit !== 'package' ? 's' : ''} · ${rate.team} ${rate.team > 1 ? 'technicians' : 'technician'} · ${rate.hours} hours`}
+          : effortLine(rate)}
       </p>
       <p className="note">{rate.note}</p>
       <small>

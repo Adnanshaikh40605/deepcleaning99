@@ -50,12 +50,12 @@ export function ratesForService(service, segment = 'Residential') {
   );
 }
 
-export function findFullHomePackage(size, type) {
+export function findFullHomePackage(size, type, tier = 'Standard') {
   return getCatalog().rates.find(
     (rate) =>
       rate.segment === 'Residential' &&
       rate.service === 'Full Home Deep Cleaning' &&
-      rate.package.startsWith(`${type} ${size} `),
+      rate.package.startsWith(`${type} ${size} ${tier} `),
   );
 }
 

@@ -8,42 +8,42 @@ const services = [
     title: 'Full Home Deep Cleaning',
     href: '/full-home-deep-cleaning/',
     note: 'Furnished and empty flats, bungalows and villas.',
-    regular: 3499,
+    regular: 2000,
     image: '/assets/services/full-home.jpg',
   },
   {
     title: 'Kitchen Deep Cleaning',
     href: '/kitchen-deep-cleaning/',
     note: 'Grease on tiles, counters, sinks and cabinets.',
-    regular: 1499,
+    regular: 1800,
     image: '/assets/services/kitchen.jpg',
   },
   {
     title: 'Bathroom Deep Cleaning',
     href: '/bathroom-deep-cleaning/',
     note: 'Tiles, toilets, basins and fittings.',
-    regular: 699,
+    regular: 1000,
     image: '/assets/services/bathroom.jpg',
   },
   {
     title: 'Sofa Cleaning',
     href: '/sofa-cleaning/',
     note: 'Fabric sofas. Leather is cleaned separately.',
-    regular: 899,
+    regular: 800,
     image: '/assets/services/sofa.jpg',
   },
   {
     title: 'Mattress Cleaning',
     href: '/mattress-cleaning/',
     note: 'Single, double and king-size mattresses.',
-    regular: 699,
+    regular: 1200,
     image: '/assets/services/mattress.jpg',
   },
   {
     title: 'Carpet Cleaning',
     href: '/carpet-cleaning/',
     note: 'Rugs and fitted carpets at home or office.',
-    regular: 960,
+    regular: 2000,
     image: '/assets/services/carpet.jpg',
   },
   {
@@ -76,7 +76,7 @@ const steps = [
 const faqs = [
   {
     q: 'Is sofa shampooing included in full-home cleaning?',
-    a: 'It is a separate service unless your selected package specifically includes it. Check the booking summary before confirming.',
+    a: 'A Premium furnished home package includes the listed fabric sofa seats. Standard packages and empty homes do not. Sofa cleaning can also be booked on its own.',
   },
   {
     q: 'Can I book only one room or item?',
